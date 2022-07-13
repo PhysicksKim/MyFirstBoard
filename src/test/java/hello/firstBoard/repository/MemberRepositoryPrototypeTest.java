@@ -23,7 +23,7 @@ class MemberRepositoryPrototypeTest {
     @Test
     void save() {
         //given
-        Member member = new Member("TestId","TestPassword", "TestName", 20L);
+        Member member = new Member("TestId","TestPassword", "TestName", 20);
 
         //when
         Member savedMember = memberRepository.save(member);
@@ -36,7 +36,7 @@ class MemberRepositoryPrototypeTest {
     @Test
     void findByUserIdTest() {
         //given
-        Member member = new Member("TestId", "TestPassword", "TestName", 20L);
+        Member member = new Member("TestId", "TestPassword", "TestName", 20);
         memberRepository.save(member);
 
         //when
@@ -49,9 +49,9 @@ class MemberRepositoryPrototypeTest {
     @Test
     void findAllTest() {
         //given
-        Member member1 = new Member("TestId1", "TestPassword1", "TestName1", 21L);
-        Member member2 = new Member("TestId2", "TestPassword2", "TestName2", 22L);
-        Member member3 = new Member("TestId3", "TestPassword3", "TestName3", 23L);
+        Member member1 = new Member("TestId1", "TestPassword1", "TestName1", 21);
+        Member member2 = new Member("TestId2", "TestPassword2", "TestName2", 22);
+        Member member3 = new Member("TestId3", "TestPassword3", "TestName3", 23);
 
         List<Member> members = List.of(new Member[]{member1, member2, member3});
 
@@ -69,7 +69,7 @@ class MemberRepositoryPrototypeTest {
     @Test
     void updatePasswordTest() {
         //given
-        Member member = new Member("TestId", "TestPassword", "TestName", 20L);
+        Member member = new Member("TestId", "TestPassword", "TestName", 20);
         memberRepository.save(member);
 
         //when
@@ -84,7 +84,7 @@ class MemberRepositoryPrototypeTest {
     @Test
     void deleteUserTest() {
         //given
-        Member member = new Member("TestId", "TestPassword", "TestName", 20L);
+        Member member = new Member("TestId", "TestPassword", "TestName", 20);
         memberRepository.save(member);
 
         //when

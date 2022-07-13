@@ -1,5 +1,6 @@
 package hello.firstBoard.domain.member;
 
+import hello.firstBoard.domain.signUp.MemberSignupForm;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,11 +17,15 @@ public class Member {
     private String userId;
     private String userPassword;
     private String name;
-    private Long age;
+    private int age;
 
     public Member() {}
 
-    public Member(String userId, String userPassword, String name, Long age) {
+    public Member(MemberSignupForm memberSignupForm) {
+        this(memberSignupForm.getUserId(), memberSignupForm.getPassword(), memberSignupForm.getName(), memberSignupForm.getAge());
+    }
+
+    public Member(String userId, String userPassword, String name, int age) {
         this.userId = userId;
         this.userPassword = userPassword;
         this.name = name;
@@ -45,8 +50,7 @@ public class Member {
     public int hashCode() {
         int userId_int = Integer.parseInt(userId);
         int name_int = Integer.parseInt(name);
-        int age_int = age.intValue();
 
-        return userId_int * name_int * age_int;
+        return userId_int * name_int * age;
     }
 }
