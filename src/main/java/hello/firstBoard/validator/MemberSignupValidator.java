@@ -54,7 +54,7 @@ public class MemberSignupValidator implements Validator {
         // 1. age range (1 ~ 200)
         if (memberSignupForm.getAge() > 200
                 || memberSignupForm.getAge() < 1) {
-            errors.rejectValue("age", "range", new Object[]{0, 200}, null);
+            errors.rejectValue("age", "range", new Object[]{1, 200}, null);
         }
 
     }

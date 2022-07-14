@@ -39,7 +39,7 @@
                                th:field="*{userPassword}"
                                placeholder="최소 6자 최대 30자">
                         <div id="passwordHelp" class="form-text">자주 사용하는 비밀번호를 쓰지 마세요!</div>
-                        <div th:errors="*{userPassword}">
+                        <div th:errors="*{userPassword}" th:errorclass="|error-text|">
                             userPassword 오류
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                         <input type="text" class="form-control" id="name" name="name"
                                th:field="*{name}"
                                placeholder="한글 15자 영문 30자">
-                        <div th:errors="*{name}">
+                        <div th:errors="*{name}" th:errorclass="|error-text|">
                             name 오류
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                         <label for="age" class="form-label">나이</label>
                         <input type="text" class="form-control" id="age" name="age"
                                th:field="*{age}">
-                        <div th:errors="*{age}">
+                        <div th:errors="*{age}" th:errorclass="|error-text|">
                             age 오류
                         </div>
                     </div>
