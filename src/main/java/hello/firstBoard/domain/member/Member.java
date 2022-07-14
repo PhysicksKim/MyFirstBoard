@@ -22,7 +22,7 @@ public class Member {
     public Member() {}
 
     public Member(MemberSignupForm memberSignupForm) {
-        this(memberSignupForm.getUserId(), memberSignupForm.getPassword(), memberSignupForm.getName(), memberSignupForm.getAge());
+        this(memberSignupForm.getUserId(), memberSignupForm.getUserPassword(), memberSignupForm.getName(), memberSignupForm.getAge());
     }
 
     public Member(String userId, String userPassword, String name, int age) {

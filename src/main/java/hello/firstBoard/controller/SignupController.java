@@ -7,6 +7,7 @@ import hello.firstBoard.validator.MemberSignupValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -29,27 +30,28 @@ public class SignupController {
 
 
     @GetMapping("/signUp")
-    public String signUpController() {
+    public String signUpController(Model model) {
         log.info("Get /signUp request");
+
+        model.addAttribute("memberSignupForm", new MemberSignupForm());
 
         return "signUp";
     }
 
     @PostMapping("/signUp")
-    @ResponseBody
     public String singUpPostController(@Validated @ModelAttribute MemberSignupForm memberSignupForm,
                                        BindingResult bindingResult) {
         log.info("Post /singUp request");
         log.info("MemberSignupForm = {}", memberSignupForm);
 
         if (bindingResult.hasErrors()) {
-            log.info("errors = {}", bindingResult);
+//            log.info("errors = {}", bindingResult);
             return "signUp";
         }
 
         // 성공 로직
         Member member = new Member(memberSignupForm);
         memberRepository.save(member);
-        return "OK";
+        return "signUp";
     }
 }
