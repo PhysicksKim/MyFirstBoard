@@ -17,26 +17,11 @@ import java.util.Enumeration;
 
 @Controller
 @Slf4j
-@RequiredArgsConstructor
 public class HomeController {
-
 
     @GetMapping("/")
     public String homeController() {
         return "home";
-    }
-
-    @GetMapping("/login")
-    public String loginController() {
-        return "login";
-    }
-
-    @PostMapping("/login")
-    @ResponseBody
-    public String loginAttemptController() {
-        log.info("Post /login request");
-
-        return "Post /login request";
     }
 
 }

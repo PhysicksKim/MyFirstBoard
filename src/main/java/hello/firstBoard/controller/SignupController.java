@@ -23,24 +23,20 @@ public class SignupController {
 
     @InitBinder
     public void init(WebDataBinder webDataBinder) {
-
-        log.info("init binder {}", webDataBinder);
         webDataBinder.addValidators(memberSignupValidator);
     }
-
 
     @GetMapping("/signUp")
     public String signUpController(Model model) {
         log.info("Get /signUp request");
-
         model.addAttribute("memberSignupForm", new MemberSignupForm());
-
         return "signUp";
     }
 
     @PostMapping("/signUp")
     public String singUpPostController(@Validated @ModelAttribute MemberSignupForm memberSignupForm,
                                        BindingResult bindingResult) {
+
         log.info("Post /singUp request");
         log.info("MemberSignupForm = {}", memberSignupForm);
 
@@ -52,6 +48,6 @@ public class SignupController {
         // 성공 로직
         Member member = new Member(memberSignupForm);
         memberRepository.save(member);
-        return "signUp";
+        return "login";
     }
 }
