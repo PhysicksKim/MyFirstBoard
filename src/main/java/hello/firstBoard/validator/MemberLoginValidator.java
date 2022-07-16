@@ -2,22 +2,26 @@ package hello.firstBoard.validator;
 
 import hello.firstBoard.domain.login.MemberLoginForm;
 import hello.firstBoard.domain.signUp.MemberSignupForm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
+@Slf4j
 public class MemberLoginValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
+        log.info("login validator ; supports()");
         return MemberLoginForm.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
 
+        log.info("login validator ; validate()");
         MemberLoginForm memberSignupForm = (MemberLoginForm) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userId", "required");

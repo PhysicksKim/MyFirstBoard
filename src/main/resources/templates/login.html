@@ -9,6 +9,9 @@
         .b{
             border:solid 1px black;
         }
+        .error-text{
+            color:red;
+        }
     </style>
 </head>
 <body>
@@ -17,18 +20,38 @@
     <div class="container align-items-center justify-content-center vw-100" style="padding-top: 15vh">
         <div class="row align-items-center justify-content-center h-100 w-100">
             <div class="col-6 border border-3 rounded-5 align-items-center">
-                <form class="px-3 py-4">
+                <form id="loginForm" name="loginForm" th:action th:object="${memberLoginForm}"
+                      class="px-3 py-4">
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">ID</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <label for="userId" class="form-label">ID</label>
+                        <input type="text" class="form-control"
+                               id="userId" name="userId"
+                               th:field="*{userId}">
+                        <div th:errors="*{userId}" th:errorclass="|error-text|">
+                            userId 오류
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
-                        <div id="emailHelp" class="form-text">Don't use the password you use often.</div>
+                        <label for="userPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control"
+                               id="userPassword" name="userPassword"
+                               th:field="*{userPassword}">
+                        <div id="userPasswordHelp" class="form-text">
+                            Don't use the password you use often.
+                        </div>
+                        <div th:errors="*{userPassword}" th:errorclass="|error-text|">
+                            userPassword 오류
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" formaction="/login" formmethod="post">Login</button>
-                    <button type="submit" class="btn btn-secondary" formaction="/signUp" formmethod="get">Sign Up</button>
+                    <button type="submit" class="btn btn-primary"
+                            formaction="/login" formmethod="post">
+                                Login
+                    </button>
+                    <button type="button" class="btn btn-secondary"
+                            onclick="location.href='signUp.html'"
+                            th:onclick="|location.href='@{/signUp}'|">
+                                Sign Up
+                    </button>
                 </form>
             </div>
         </div>

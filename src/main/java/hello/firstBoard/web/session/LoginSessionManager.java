@@ -1,5 +1,6 @@
 package hello.firstBoard.web.session;
 
+import hello.firstBoard.domain.member.Member;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
@@ -16,19 +17,19 @@ public class LoginSessionManager {
 
     public static final String LOGIN_SESSION_COOKIE = "loginSessionId";
 
-    private Map<String, Object> sessionStore = new ConcurrentHashMap<>();
+    private Map<String, Member> sessionStore = new ConcurrentHashMap<>();
 
-    public void createSession(Object value, HttpServletResponse response) {
+    public void createSession(Member member, HttpServletResponse response) {
         // session manager에 로그인 정보 등록
         String sessionId = UUID.randomUUID().toString();
-        sessionStore.put(sessionId, value);
+        sessionStore.put(sessionId, member);
 
         // 쿠키 생성
         Cookie loginCookie = new Cookie(LOGIN_SESSION_COOKIE, sessionId);
         response.addCookie(loginCookie);
     }
 
-    public Object getSession(HttpServletRequest request) {
+    public Member getSession(HttpServletRequest request) {
         Cookie loginSessionCookie = findCookie(request, LOGIN_SESSION_COOKIE);
         if (loginSessionCookie == null) {
             return null;
