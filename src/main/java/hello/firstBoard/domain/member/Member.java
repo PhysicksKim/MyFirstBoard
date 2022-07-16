@@ -36,7 +36,7 @@ public class Member {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Member)) {
-            log.info("-----{} is Not instanceof Member -----", o);
+            log.debug("-----{} is Not instanceof Member -----", o);
             return false;
         }
 

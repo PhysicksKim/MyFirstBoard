@@ -27,11 +27,11 @@ public class MemberRepositoryPrototype implements MemberRepository {
     public MemberRepositoryPrototype(DataSource dataSource) {
         // dataSource에서 autowired안된다고 에러나는건 intellij 버그임
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        log.info("dataSource = {}", dataSource);
+        log.debug("dataSource = {}", dataSource);
         try {
-            log.info("dataSource.getConnection() = {}", dataSource.getConnection());
+            log.debug("dataSource.getConnection() = {}", dataSource.getConnection());
         } catch (SQLException e) {
-            log.info("ERROR OCCURED ; datasource DI error ");
+            log.debug("ERROR OCCURED ; datasource DI error ");
         }
     }
 
@@ -60,7 +60,7 @@ public class MemberRepositoryPrototype implements MemberRepository {
             Member member = jdbcTemplate.queryForObject(sql, sqlParam, memberRowMapper());
             return Optional.of(member);
         } catch (EmptyResultDataAccessException e) {
-            log.info("ERROR : {} ; tried to find {}, but not found at finByUserId", e, userId);
+            log.debug("ERROR : {} ; tried to find {}, but not found at finByUserId", e, userId);
             return Optional.empty();
         }
 
@@ -93,7 +93,7 @@ public class MemberRepositoryPrototype implements MemberRepository {
                 .addValue("userId", member.getUserId());
 
         int update = jdbcTemplate.update(sql, sqlParam);
-        log.info("deleted {} rows FROM MEMBER", update);
+        log.debug("deleted {} rows FROM MEMBER", update);
 
         return true;
     }

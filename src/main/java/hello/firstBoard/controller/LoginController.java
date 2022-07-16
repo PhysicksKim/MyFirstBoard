@@ -31,10 +31,8 @@ public class LoginController {
     private final LoginService loginService;
     private final MemberLoginValidator memberLoginValidator;
 
-    private final LoginSessionManager loginSessionManager;
-
     @InitBinder
-    public void init(WebDataBinder webDataBinder) {
+    public void initMemberLoginValidator(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(memberLoginValidator);
     }
 
@@ -48,6 +46,7 @@ public class LoginController {
         // 이미 로그인 한 상태인지 검증
         // ; 로그인 세션 있으면 로그인홈으로 이동
         if (loginMember != null) {
+            model.addAttribute("member", loginMember);
             return "loginHome";
         }
 
@@ -60,42 +59,28 @@ public class LoginController {
     public String loginAttemptController(@Validated @ModelAttribute MemberLoginForm memberLoginForm,
                                          BindingResult bindingResult,
                                          HttpServletRequest request) {
-        log.info("Post /login request");
-        log.info("memberLoginForm = {}", memberLoginForm);
+        log.debug("Post /login request");
+        log.debug("memberLoginForm = {}", memberLoginForm);
+
+
 
         if (bindingResult.hasErrors()) {
-            log.info("binding error");
-            return "login";
+            log.debug("login binding error");
+            return "/login";
         }
 
-        Member findMember
-                = loginService.findByUserId(memberLoginForm.getUserId());
+        Member loginMember = loginService.login(memberLoginForm);
 
-        // 로그인 성공 검사
-        // 1. 해당 아이디 멤버가 있는지 검사
-        if (findMember == null) {
-            // 아이디 잘못 입력
-//            log.info("findMember Id = {} , Password = {}", findMember.getUserId(), findMember.getUserPassword());
-//            log.info("loginForm Id = {} , Password = {}", memberLoginForm.getUserId(), memberLoginForm.getUserPassword());
-            return "login";
-        }
-
-        // 2. password 일치 검사
-        if (memberLoginForm.getUserPassword() == null) {
-            log.info("password is NULL !!!");
-            return "login";
-        }
-        if (!findMember.getUserPassword().equals(memberLoginForm.getUserPassword())) {
-            // password 잘못 입력
-            log.info("findMember Id = {} , Password = {}", findMember.getUserId(), findMember.getUserPassword());
-            log.info("loginForm Id = {} , Password = {}", memberLoginForm.getUserId(), memberLoginForm.getUserPassword());
-            return "login";
+        if (loginMember == null) {
+            log.debug("loginMember == null");
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            return "/login";
         }
 
         // 로그인 성공 후 로직
         HttpSession session = request.getSession();
-        session.setAttribute(LoginSessionConst.LOGIN_MEMBER, findMember);
-        return "loginHome";
+        session.setAttribute(LoginSessionConst.LOGIN_MEMBER, loginMember);
+        return "redirect:/";
     }
 
     @GetMapping("/logout")

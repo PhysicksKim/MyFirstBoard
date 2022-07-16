@@ -21,12 +21,14 @@ public class MemberLoginValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
 
-        log.info("login validator ; validate()");
+        log.debug("login validator ; validate()");
         MemberLoginForm memberSignupForm = (MemberLoginForm) target;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userId", "required");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "required");
+        log.debug("MemberLoginForm validate()");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userId", "required", "디폴트 메세지, 필수 값입니다");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "required", "디폴트 메세지, 필수 값입니다");
 
+        errors.getAllErrors().stream().forEach(objectError -> log.debug(objectError.toString()));
 
         // UserId       VARCHAR(20)
         // UserPassword VARCHAR(30)

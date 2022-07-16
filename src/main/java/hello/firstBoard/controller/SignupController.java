@@ -28,7 +28,7 @@ public class SignupController {
 
     @GetMapping("/signUp")
     public String signUpController(Model model) {
-        log.info("Get /signUp request");
+        log.debug("Get /signUp request");
         model.addAttribute("memberSignupForm", new MemberSignupForm());
         return "signUp";
     }
@@ -37,11 +37,11 @@ public class SignupController {
     public String singUpPostController(@Validated @ModelAttribute MemberSignupForm memberSignupForm,
                                        BindingResult bindingResult) {
 
-        log.info("Post /singUp request");
-        log.info("MemberSignupForm = {}", memberSignupForm);
+        log.debug("Post /singUp request");
+        log.debug("MemberSignupForm = {}", memberSignupForm);
 
         if (bindingResult.hasErrors()) {
-//            log.info("errors = {}", bindingResult);
+            log.debug("errors = {}", bindingResult);
             return "signUp";
         }
 
