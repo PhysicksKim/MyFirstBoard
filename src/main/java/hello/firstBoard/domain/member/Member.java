@@ -40,6 +40,10 @@ public class Member {
             return false;
         }
 
+        if (o.getClass() != Member.class) {
+            return false;
+        }
+
         Member argMember = (Member) o;
 
         return (argMember.getUserId().equals(this.getUserId()))
