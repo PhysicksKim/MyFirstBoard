@@ -25,7 +25,8 @@ public class MemberRepositoryPrototype implements MemberRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public MemberRepositoryPrototype(DataSource dataSource) {
-        // dataSource에서 autowired안된다고 에러나는건 intellij 버그임
+        // 매소드 파라미터에 있는 dataSource에서 autowired안된다고 에러나는건 intellij 버그임
+
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         log.debug("dataSource = {}", dataSource);
         try {

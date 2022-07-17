@@ -1,6 +1,6 @@
 package hello.firstBoard.service.login;
 
-import hello.firstBoard.domain.login.MemberLoginForm;
+import hello.firstBoard.domain.member.MemberLoginForm;
 import hello.firstBoard.domain.member.Member;
 import hello.firstBoard.repository.MemberRepositoryPrototype;
 import lombok.RequiredArgsConstructor;

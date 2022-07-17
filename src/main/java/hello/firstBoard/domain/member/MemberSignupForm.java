@@ -1,4 +1,4 @@
-package hello.firstBoard.domain.signUp;
+package hello.firstBoard.domain.member;
 
 import lombok.Data;
 

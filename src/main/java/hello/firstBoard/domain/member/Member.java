@@ -1,11 +1,7 @@
 package hello.firstBoard.domain.member;
 
-import hello.firstBoard.domain.login.MemberLoginForm;
-import hello.firstBoard.domain.signUp.MemberSignupForm;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Objects;
 
 @Data
 @Slf4j

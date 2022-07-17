@@ -1,12 +1,10 @@
 package hello.firstBoard.validator;
 
-import hello.firstBoard.domain.signUp.MemberSignupForm;
+import hello.firstBoard.domain.member.MemberSignupForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import javax.validation.Validation;
 
 @Component
 public class MemberSignupValidator implements Validator {

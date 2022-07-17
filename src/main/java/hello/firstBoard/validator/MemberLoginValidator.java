@@ -1,7 +1,6 @@
 package hello.firstBoard.validator;
 
-import hello.firstBoard.domain.login.MemberLoginForm;
-import hello.firstBoard.domain.signUp.MemberSignupForm;
+import hello.firstBoard.domain.member.MemberLoginForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

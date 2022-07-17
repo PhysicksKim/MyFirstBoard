@@ -1,7 +1,8 @@
 package hello.firstBoard.controller;
 
+import hello.firstBoard.consts.ViewPathConst;
 import hello.firstBoard.domain.member.Member;
-import hello.firstBoard.domain.signUp.MemberSignupForm;
+import hello.firstBoard.domain.member.MemberSignupForm;
 import hello.firstBoard.repository.MemberRepository;
 import hello.firstBoard.validator.MemberSignupValidator;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class SignupController {
     public String signUpController(Model model) {
         log.debug("Get /signUp request");
         model.addAttribute("memberSignupForm", new MemberSignupForm());
-        return "signUp";
+        return ViewPathConst.SIGNUP_PAGE;
     }
 
     @PostMapping("/signUp")
@@ -42,12 +43,12 @@ public class SignupController {
 
         if (bindingResult.hasErrors()) {
             log.debug("errors = {}", bindingResult);
-            return "signUp";
+            return ViewPathConst.SIGNUP_PAGE;
         }
 
         // 성공 로직
         Member member = new Member(memberSignupForm);
         memberRepository.save(member);
-        return "login";
+        return ViewPathConst.LOGIN_PAGE;
     }
 }
