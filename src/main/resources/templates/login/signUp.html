@@ -28,6 +28,10 @@
                 <form name="signupForm" id="signupForm" class="p-3"
                       th:action th:object="${memberSignupForm}" method="post">
                     <h2>회원 가입</h2>
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <p class="error-text" th:each="err : ${#fields.globalErrors()}"
+                           th:text="${err}">전체 오류 메시지 - 아이디 중복시 거절</p>
+                    </div>
                     <div class="mb-3">
                         <label for="userId" class="form-label">ID</label>
                         <input type="text" class="form-control" id="userId" name="userId"

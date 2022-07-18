@@ -48,7 +48,13 @@ public class SignupController {
 
         // 성공 로직
         Member member = new Member(memberSignupForm);
-        memberRepository.save(member);
+        Member savedMember = memberRepository.save(member);
+
+        if (savedMember == null) {
+            bindingResult.rejectValue("userId", "notUniqueId");
+            return ViewPathConst.SIGNUP_PAGE;
+        }
+
         return ViewPathConst.LOGIN_PAGE;
     }
 }

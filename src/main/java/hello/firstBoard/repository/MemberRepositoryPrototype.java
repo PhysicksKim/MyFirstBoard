@@ -39,6 +39,12 @@ public class MemberRepositoryPrototype implements MemberRepository {
     @Override
     public Member save(Member member) {
 
+        // 같은 아이디의 유저가 있다면
+        // 가입 불가로 null 반환
+        if (!findByUserId(member.getUserId()).isEmpty()) {
+            return null;
+        }
+
         String sql = "INSERT INTO MEMBER(USERID, USERPASSWORD, NAME, AGE) "
                 + "VALUES(:userId, :userPassword, :name, :age)";
         SqlParameterSource sqlParam = new BeanPropertySqlParameterSource(member);
