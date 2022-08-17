@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StopWatch;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,6 +38,8 @@ public class LoginController {
             Member loginMember,
             HttpServletRequest request,
             Model model) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
 
         // 이미 로그인 한 상태인지 검증
         // ; 로그인 세션 있으면 로그인홈으로 이동
@@ -46,6 +49,9 @@ public class LoginController {
         }
 
         model.addAttribute("memberLoginForm", new MemberLoginForm());
+
+        stopWatch.stop();
+        log.info("stopWatch -------- : {}ms ----------", stopWatch.getTotalTimeMillis());
         // 로그인 하지 않은 상태이므로 login 으로 이동
         return ViewPathConst.LOGIN_PAGE;
     }
