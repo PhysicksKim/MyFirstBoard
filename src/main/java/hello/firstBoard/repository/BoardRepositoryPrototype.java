@@ -3,12 +3,18 @@ package hello.firstBoard.repository;
 import hello.firstBoard.domain.board.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Slf4j
@@ -28,7 +34,20 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
     @Override
     public Post save(Post post) {
-        return null;
+
+        String sql = "INSERT INTO BOARD(TITLE, WRITER, CONTENT) "
+                + "VALUES(:title, :writer, :content)";
+        SqlParameterSource sqlParam = new BeanPropertySqlParameterSource(post);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(sql, sqlParam, keyHolder);
+
+        Map<String, Object> keys = keyHolder.getKeys();
+        // keys 에는 "ID" "DATE" 두 가지 있음
+//        log.info(keys.get("ID").toString());    // 예 : 3
+//        log.info(keys.get("DATE").toString());  // 예 : 2022-08-21 21:21:14.793822
+
+        return post;
     }
 
     @Override

@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
+
 @Data
 @Slf4j
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -15,6 +17,5 @@ public class Post {
     private String title;
     private String writer;
     private String content;
-    private String date; // 이걸 java.util.Date를 써야할지 생각해봐야겠음
-
+    private Date date;
 }

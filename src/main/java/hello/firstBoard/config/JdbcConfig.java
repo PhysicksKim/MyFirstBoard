@@ -1,5 +1,7 @@
 package hello.firstBoard.config;
 
+import hello.firstBoard.repository.BoardRepository;
+import hello.firstBoard.repository.BoardRepositoryPrototype;
 import hello.firstBoard.repository.MemberRepository;
 import hello.firstBoard.repository.MemberRepositoryPrototype;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,11 @@ public class JdbcConfig {
     @Bean
     public MemberRepository memberRepository() {
         return new MemberRepositoryPrototype(dataSource);
+    }
+
+    @Bean
+    public BoardRepository boardRepository() {
+        return new BoardRepositoryPrototype(dataSource);
     }
 
 }
