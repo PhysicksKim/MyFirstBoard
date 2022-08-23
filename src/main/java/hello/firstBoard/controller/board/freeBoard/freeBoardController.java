@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -37,5 +39,21 @@ public class freeBoardController {
         boardService.savePost(post);
 //        return "redirect:"+ViewPathConst.FREEBOARD_PAGE;
         return "redirect:/";
+    }
+
+    @GetMapping("/board/free/list")
+    public String freeBoardListTest(Model model) {
+        List<Post> postList = boardService.getPostList();
+        for (Post post : postList) {
+            log.info("Post Id : {}",post.getId());
+            log.info("Post Writer : {}", post.getWriter());
+            log.info("Post Title : {}", post.getTitle());
+            log.info("Post Content : {}", post.getContent());
+            log.info("Post Date : {}", post.getDate());
+        }
+
+        model.addAttribute("postList", postList);
+
+        return "/board/freeList";
     }
 }

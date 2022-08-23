@@ -13,7 +13,8 @@ public interface BoardRepository {
     Post save(Post post);
 
     // Read
-    List<Post> getList(); // 페이징 기능을 구현하려면, 페이지당 글 수, 페이지 번호 등을 받아와야하는데 이건 나중에 구현
+    Post getPost();
+    List<Post> getPostList(); // 페이징 기능을 구현하려면, 페이지당 글 수, 페이지 번호 등을 받아와야하는데 이건 나중에 구현
 
     // Update
     Post update(Post post);

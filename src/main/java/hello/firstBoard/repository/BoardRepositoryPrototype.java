@@ -1,9 +1,14 @@
 package hello.firstBoard.repository;
 
 import hello.firstBoard.domain.board.Post;
+import hello.firstBoard.domain.member.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,6 +20,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -51,7 +57,20 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
-    public List<Post> getList() {
+    public Post getPost() {
+        return null;
+    }
+
+    @Override
+    public List<Post> getPostList() {
+        String sql = "SELECT * FROM BOARD";
+
+        try {
+            List<Post> postList = jdbcTemplate.query(sql, postRowMapper());
+            return postList;
+        } catch (Exception e) {
+            log.debug("ERROR : {} ; getPostList() query error",e);
+        }
         return null;
     }
 
@@ -73,5 +92,9 @@ public class BoardRepositoryPrototype implements BoardRepository {
     @Override
     public Post delete(int postId) {
         return null;
+    }
+
+    private RowMapper<Post> postRowMapper() {
+        return BeanPropertyRowMapper.newInstance(Post.class);
     }
 }

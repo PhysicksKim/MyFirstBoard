@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -14,6 +16,10 @@ public class BoardService {
 
     public Post savePost(Post post) {
         return boardRepository.save(post);
+    }
+
+    public List<Post> getPostList() {
+        return boardRepository.getPostList();
     }
 
 }
