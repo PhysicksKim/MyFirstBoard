@@ -17,10 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 @Slf4j
@@ -57,8 +54,16 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
-    public Post getPost() {
-        return null;
+    public Post getPost(long postId) {
+
+        String sql = "SELECT * FROM BOARD where ID=:postId";
+
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("postId", postId);
+
+        Post post = jdbcTemplate.queryForObject(sql, param, postRowMapper());
+
+        return post;
     }
 
     @Override

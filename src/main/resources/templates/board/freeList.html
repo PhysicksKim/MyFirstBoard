@@ -36,7 +36,7 @@
     <tbody>
     <tr th:each="post : ${postList}">
       <td th:text="${post.id}"> </td>
-      <td th:text="${post.title}"> </td>
+      <td> <a th:text="${post.title}" th:href="|/board/free/${post.id}|"></a> </td>
       <td th:text="${post.writer}"> </td>
       <td th:text="${post.date}"> </td>
     </tr>

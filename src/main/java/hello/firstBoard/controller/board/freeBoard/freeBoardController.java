@@ -8,7 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -54,6 +56,15 @@ public class freeBoardController {
 
         model.addAttribute("postList", postList);
 
-        return "/board/freeList";
+        return ViewPathConst.FREEBOARD_LIST;
+    }
+
+    @GetMapping("/board/free/{postId}")
+    public String freeBoardReadPost(@PathVariable long postId, Model model) {
+
+        Post post = boardService.getPost(postId);
+        model.addAttribute("post", post);
+
+        return ViewPathConst.FREEBOARD_POST;
     }
 }

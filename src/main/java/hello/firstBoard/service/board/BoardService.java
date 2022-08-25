@@ -22,4 +22,8 @@ public class BoardService {
         return boardRepository.getPostList();
     }
 
+    public Post getPost(long postId) {
+        return boardRepository.getPost(postId);
+    }
+
 }
