@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -31,17 +28,17 @@ public class freeBoardController {
         return ViewPathConst.FREEBOARD_PAGE;
     }
 
-    @PostMapping("/board/free/post")
-    public String freeBoardSave(Model model) {
-        Post post = new Post();
-        post.setTitle("Test 제목");
-        post.setWriter("Test 작성자");
-        post.setContent("Test 글 내용");
-
-        boardService.savePost(post);
-//        return "redirect:"+ViewPathConst.FREEBOARD_PAGE;
-        return "redirect:/";
-    }
+//    @PostMapping("/board/free/post")
+//    public String freeBoardSave(Model model) {
+//        Post post = new Post();
+//        post.setTitle("Test 제목");
+//        post.setWriter("Test 작성자");
+//        post.setContent("Test 글 내용");
+//
+//        boardService.savePost(post);
+////        return "redirect:"+ViewPathConst.FREEBOARD_PAGE;
+//        return "redirect:/";
+//    }
 
     @GetMapping("/board/free/list")
     public String freeBoardListTest(Model model) {
@@ -66,5 +63,20 @@ public class freeBoardController {
         model.addAttribute("post", post);
 
         return ViewPathConst.FREEBOARD_POST;
+    }
+
+    @GetMapping("/board/free/postWrite")
+    public String freeBoardWritePost() {
+
+        return "board/postWrite";
+    }
+
+    @PostMapping("/board/write")
+    public String writePost(@RequestBody String body) {
+
+        log.info("Request Body ------------");
+        log.info(body);
+
+        return "redirect:/";
     }
 }
