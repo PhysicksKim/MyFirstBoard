@@ -19,7 +19,13 @@
                 <td> <input id="title" name="title" type="text" placeholder="제목을 입력하세요"></td>
             </tr>
             <tr>
-                <td> <textarea id="content" name="content" placeholder="글 내용을 입력하세요"> </textarea> </td>
+            <td th:text="'작성자'"></td>
+            <td> <input id="writer" name="writer" type="text" placeholder="작성자"></td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea id="content" name="content" placeholder="글 내용을 입력하세요"> </textarea>
+                </td>
             </tr>
         </table>
 

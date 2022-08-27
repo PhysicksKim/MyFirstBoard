@@ -70,6 +70,7 @@ public class BoardRepositoryPrototype implements BoardRepository {
     public List<Post> getPostList() {
         String sql = "SELECT ID, TITLE, WRITER, DATE FROM BOARD";
 
+
         try {
             List<Post> postList = jdbcTemplate.query(sql, postRowMapper());
             return postList;

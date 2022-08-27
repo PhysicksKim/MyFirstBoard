@@ -2,6 +2,7 @@ package hello.firstBoard.controller.board.freeBoard;
 
 import hello.firstBoard.consts.ViewPathConst;
 import hello.firstBoard.domain.board.Post;
+import hello.firstBoard.domain.board.PostWrite;
 import hello.firstBoard.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,7 @@ public class freeBoardController {
     @GetMapping("/board/free/list")
     public String freeBoardListTest(Model model) {
         List<Post> postList = boardService.getPostList();
+        log.info(postList.toString());
         for (Post post : postList) {
             log.info("Post Id : {}",post.getId());
             log.info("Post Writer : {}", post.getWriter());
@@ -72,10 +74,15 @@ public class freeBoardController {
     }
 
     @PostMapping("/board/write")
-    public String writePost(@RequestBody String body) {
+    public String writePost(@ModelAttribute PostWrite postWrite) {
 
-        log.info("Request Body ------------");
-        log.info(body);
+        log.info("TITLE : {}", postWrite.getTitle());
+        log.info("WRITER : {}", postWrite.getWriter());
+        log.info("CONTENT : {}", postWrite.getContent());
+
+        Post post = new Post(postWrite);
+
+
 
         return "redirect:/";
     }
