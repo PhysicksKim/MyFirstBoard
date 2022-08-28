@@ -17,6 +17,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Repository
@@ -50,7 +52,22 @@ public class BoardRepositoryPrototype implements BoardRepository {
 //        log.info(keys.get("ID").toString());    // 예 : 3
 //        log.info(keys.get("DATE").toString());  // 예 : 2022-08-21 21:21:14.793822
 
-        return post;
+        post.setId(Long.parseLong(keys.get("ID").toString()));
+
+        //        2022-08-21 21:21:14.793822
+
+        String sqlDateString = keys.get("DATE").toString();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        try {
+            post.setDate(formatter.parse(sqlDateString));
+            return post;
+        } catch (ParseException e) {
+            log.error("ERROR : {}",this.getClass());
+            log.error("save() method Date Parse Error : " , e);
+            return post;
+        }
     }
 
     @Override

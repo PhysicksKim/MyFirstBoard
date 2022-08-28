@@ -82,8 +82,8 @@ public class freeBoardController {
 
         Post post = new Post(postWrite);
 
+        Post savedPost = boardService.savePost(post);
 
-
-        return "redirect:/";
+        return "redirect:/board/free/"+savedPost.getId();
     }
 }
