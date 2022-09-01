@@ -87,7 +87,6 @@ public class BoardRepositoryPrototype implements BoardRepository {
     public List<Post> getPostList() {
         String sql = "SELECT ID, TITLE, WRITER, DATE FROM BOARD";
 
-
         try {
             List<Post> postList = jdbcTemplate.query(sql, postRowMapper());
             return postList;
@@ -99,6 +98,9 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
     @Override
     public Post update(Post post) {
+
+        log.info("HELLO!!! update() Method!! ");
+
         return null;
     }
 

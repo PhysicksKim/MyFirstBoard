@@ -18,40 +18,22 @@ import java.util.List;
 @Slf4j
 public class freeBoardController {
 
+
+    // 해야 할 일
+    // 1. 게시판 페이징 구현
+    // 1-1. 일단 OFFSET 페이징으로 간단히 구현해봄
+    // 1-2. 그 다음 Cursor 페이징으로 구현
+
+
+
     private final BoardService boardService;
+
 
     // 게시글은
     // 글 번호 | 글 제목 | 작성자 | 작성일 로 보여줌
-
     @GetMapping("/board/free")
-    public String freeBoardList(Model model) {
-
-        return ViewPathConst.FREEBOARD_PAGE;
-    }
-
-//    @PostMapping("/board/free/post")
-//    public String freeBoardSave(Model model) {
-//        Post post = new Post();
-//        post.setTitle("Test 제목");
-//        post.setWriter("Test 작성자");
-//        post.setContent("Test 글 내용");
-//
-//        boardService.savePost(post);
-////        return "redirect:"+ViewPathConst.FREEBOARD_PAGE;
-//        return "redirect:/";
-//    }
-
-    @GetMapping("/board/free/list")
     public String freeBoardListTest(Model model) {
         List<Post> postList = boardService.getPostList();
-        log.info(postList.toString());
-        for (Post post : postList) {
-            log.info("Post Id : {}",post.getId());
-            log.info("Post Writer : {}", post.getWriter());
-            log.info("Post Title : {}", post.getTitle());
-            log.info("Post Content : {}", post.getContent());
-            log.info("Post Date : {}", post.getDate());
-        }
 
         model.addAttribute("postList", postList);
 
@@ -65,6 +47,15 @@ public class freeBoardController {
         model.addAttribute("post", post);
 
         return ViewPathConst.FREEBOARD_POST;
+    }
+
+    @GetMapping("/board/free/postWrite/{postId}")
+    public String freeBoardWritePost(@PathVariable long postId, Model model) {
+
+        Post post = boardService.getPost(postId);
+        model.addAttribute("post", post);
+
+        return "board/postUpdate";
     }
 
     @GetMapping("/board/free/postWrite")
@@ -85,5 +76,14 @@ public class freeBoardController {
         Post savedPost = boardService.savePost(post);
 
         return "redirect:/board/free/"+savedPost.getId();
+    }
+
+    @PostMapping("/board/update")
+    public String updatePost(@ModelAttribute Post post) {
+
+        log.info("HELLO!! updatePost() Method");
+        Post savedPost = boardService.updatePost(post);
+
+        return "redirect:/";
     }
 }
