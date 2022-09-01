@@ -17,8 +17,8 @@ public interface BoardRepository {
     List<Post> getPostList(); // 페이징 기능을 구현하려면, 페이지당 글 수, 페이지 번호 등을 받아와야하는데 이건 나중에 구현
 
     // Update
-    Post update(Post post);
-    Post update(int postId);
+    void update(Post post);
+    void update(int postId);
 
     // Delete
     Post delete(Post post);

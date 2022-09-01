@@ -26,8 +26,8 @@ public class BoardService {
         return boardRepository.getPost(postId);
     }
 
-    public Post updatePost(Post post) {
-        return boardRepository.update(post);
+    public void updatePost(Post post) {
+        boardRepository.update(post);
     }
 
 }

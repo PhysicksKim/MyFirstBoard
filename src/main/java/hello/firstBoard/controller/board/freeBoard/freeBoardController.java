@@ -24,8 +24,6 @@ public class freeBoardController {
     // 1-1. 일단 OFFSET 페이징으로 간단히 구현해봄
     // 1-2. 그 다음 Cursor 페이징으로 구현
 
-
-
     private final BoardService boardService;
 
 
@@ -42,7 +40,6 @@ public class freeBoardController {
 
     @GetMapping("/board/free/{postId}")
     public String freeBoardReadPost(@PathVariable long postId, Model model) {
-
         Post post = boardService.getPost(postId);
         model.addAttribute("post", post);
 
@@ -51,7 +48,6 @@ public class freeBoardController {
 
     @GetMapping("/board/free/postWrite/{postId}")
     public String freeBoardWritePost(@PathVariable long postId, Model model) {
-
         Post post = boardService.getPost(postId);
         model.addAttribute("post", post);
 
@@ -60,17 +56,11 @@ public class freeBoardController {
 
     @GetMapping("/board/free/postWrite")
     public String freeBoardWritePost() {
-
         return "board/postWrite";
     }
 
     @PostMapping("/board/write")
     public String writePost(@ModelAttribute PostWrite postWrite) {
-
-        log.info("TITLE : {}", postWrite.getTitle());
-        log.info("WRITER : {}", postWrite.getWriter());
-        log.info("CONTENT : {}", postWrite.getContent());
-
         Post post = new Post(postWrite);
 
         Post savedPost = boardService.savePost(post);
@@ -80,10 +70,7 @@ public class freeBoardController {
 
     @PostMapping("/board/update")
     public String updatePost(@ModelAttribute Post post) {
-
-        log.info("HELLO!! updatePost() Method");
-        Post savedPost = boardService.updatePost(post);
-
-        return "redirect:/";
+        boardService.updatePost(post);
+        return "redirect:/board/free/"+post.getId();
     }
 }

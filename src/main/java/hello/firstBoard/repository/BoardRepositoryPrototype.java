@@ -72,15 +72,12 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
     @Override
     public Post getPost(long postId) {
-
         String sql = "SELECT * FROM BOARD where ID=:postId";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("postId", postId);
 
-        Post post = jdbcTemplate.queryForObject(sql, param, postRowMapper());
-
-        return post;
+        return jdbcTemplate.queryForObject(sql, param, postRowMapper());
     }
 
     @Override
@@ -88,25 +85,25 @@ public class BoardRepositoryPrototype implements BoardRepository {
         String sql = "SELECT ID, TITLE, WRITER, DATE FROM BOARD";
 
         try {
-            List<Post> postList = jdbcTemplate.query(sql, postRowMapper());
-            return postList;
+            return jdbcTemplate.query(sql, postRowMapper()); // List<Post> 반환
         } catch (Exception e) {
-            log.debug("ERROR : {} ; getPostList() query error",e);
+            log.debug("ERROR : getPostList() query error",e);
         }
         return null;
     }
 
     @Override
-    public Post update(Post post) {
+    public void update(Post post) {
+        String sql = "UPDATE BOARD " +
+                "SET TITLE=:title, WRITER=:writer, CONTENT=:content " +
+                "WHERE ID=:id;";
+        SqlParameterSource sqlParam = new BeanPropertySqlParameterSource(post);
 
-        log.info("HELLO!!! update() Method!! ");
-
-        return null;
+        jdbcTemplate.update(sql, sqlParam);
     }
 
     @Override
-    public Post update(int postId) {
-        return null;
+    public void update(int postId) {
     }
 
     @Override
