@@ -103,17 +103,21 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
-    public void update(int postId) {
+    public void update(long postId) {
     }
 
     @Override
-    public Post delete(Post post) {
-        return null;
+    public void delete(Post post) {
     }
 
     @Override
-    public Post delete(int postId) {
-        return null;
+    public void delete(long postId) {
+        String sql = "DELETE BOARD WHERE ID=:id";
+
+        SqlParameterSource sqlParam = new MapSqlParameterSource()
+                .addValue("id", postId);
+
+        jdbcTemplate.update(sql, sqlParam);
     }
 
     private RowMapper<Post> postRowMapper() {

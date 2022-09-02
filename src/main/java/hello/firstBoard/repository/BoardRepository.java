@@ -18,10 +18,10 @@ public interface BoardRepository {
 
     // Update
     void update(Post post);
-    void update(int postId);
+    void update(long postId);
 
     // Delete
-    Post delete(Post post);
-    Post delete(int postId);
+    void delete(Post post);
+    void delete(long postId);
 
 }

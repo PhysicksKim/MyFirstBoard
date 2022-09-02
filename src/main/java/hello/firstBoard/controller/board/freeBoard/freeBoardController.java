@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -72,5 +71,11 @@ public class freeBoardController {
     public String updatePost(@ModelAttribute Post post) {
         boardService.updatePost(post);
         return "redirect:/board/free/"+post.getId();
+    }
+
+    @PostMapping("/board/free/postDelete")
+    public String deletePost(@RequestParam long id) {
+        boardService.deletePost(id);
+        return "redirect:/";
     }
 }

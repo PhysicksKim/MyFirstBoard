@@ -30,4 +30,7 @@ public class BoardService {
         boardRepository.update(post);
     }
 
+    public void deletePost(long id) {
+        boardRepository.delete(id);
+    }
 }
