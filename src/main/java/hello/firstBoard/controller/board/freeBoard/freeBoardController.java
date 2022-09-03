@@ -28,7 +28,7 @@ public class freeBoardController {
 
     // 게시글은
     // 글 번호 | 글 제목 | 작성자 | 작성일 로 보여줌
-    @GetMapping("/board/free")
+    @GetMapping("/board/free") // 게시판 첫 진입 (리스트)
     public String freeBoardListTest(Model model) {
         List<Post> postList = boardService.getPostList();
 
@@ -37,7 +37,7 @@ public class freeBoardController {
         return ViewPathConst.FREEBOARD_LIST;
     }
 
-    @GetMapping("/board/free/{postId}")
+    @GetMapping("/board/free/{postId}") // postId 글 페이지
     public String freeBoardReadPost(@PathVariable long postId, Model model) {
         Post post = boardService.getPost(postId);
         model.addAttribute("post", post);
@@ -45,7 +45,7 @@ public class freeBoardController {
         return ViewPathConst.FREEBOARD_POST;
     }
 
-    @GetMapping("/board/free/postWrite/{postId}")
+    @GetMapping("/board/free/write/{postId}") // postId 글 수정 페이지
     public String freeBoardWritePost(@PathVariable long postId, Model model) {
         Post post = boardService.getPost(postId);
         model.addAttribute("post", post);
@@ -53,12 +53,12 @@ public class freeBoardController {
         return "board/postUpdate";
     }
 
-    @GetMapping("/board/free/postWrite")
+    @GetMapping("/board/free/write") // 새 글 작성 페이지
     public String freeBoardWritePost() {
         return "board/postWrite";
     }
 
-    @PostMapping("/board/write")
+    @PostMapping("/board/write") // 글 작성 요청
     public String writePost(@ModelAttribute PostWrite postWrite) {
         Post post = new Post(postWrite);
 
@@ -67,13 +67,13 @@ public class freeBoardController {
         return "redirect:/board/free/"+savedPost.getId();
     }
 
-    @PostMapping("/board/update")
+    @PostMapping("/board/update") // 글 수정 요청
     public String updatePost(@ModelAttribute Post post) {
         boardService.updatePost(post);
         return "redirect:/board/free/"+post.getId();
     }
 
-    @PostMapping("/board/free/postDelete")
+    @PostMapping("/board/free/postDelete") // 글 삭제 요청  
     public String deletePost(@RequestParam long id) {
         boardService.deletePost(id);
         return "redirect:/";
