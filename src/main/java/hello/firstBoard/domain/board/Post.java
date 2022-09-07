@@ -21,6 +21,7 @@ public class Post {
     private String writer;
     private String content;
     private Date date;
+    private int hit;
 
     public Post(PostWrite postWrite) {
         this.title = postWrite.getTitle();

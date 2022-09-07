@@ -82,7 +82,7 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
     @Override
     public List<Post> getPostList() {
-        String sql = "SELECT ID, TITLE, WRITER, DATE FROM BOARD";
+        String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD";
 
         try {
             return jdbcTemplate.query(sql, postRowMapper()); // List<Post> 반환
@@ -113,6 +113,16 @@ public class BoardRepositoryPrototype implements BoardRepository {
     @Override
     public void delete(long postId) {
         String sql = "DELETE BOARD WHERE ID=:id";
+
+        SqlParameterSource sqlParam = new MapSqlParameterSource()
+                .addValue("id", postId);
+
+        jdbcTemplate.update(sql, sqlParam);
+    }
+
+    @Override
+    public void plusHit(long postId){
+        String sql = "UPDATE BOARD SET HIT = HIT + 1 WHERE ID=:id";
 
         SqlParameterSource sqlParam = new MapSqlParameterSource()
                 .addValue("id", postId);

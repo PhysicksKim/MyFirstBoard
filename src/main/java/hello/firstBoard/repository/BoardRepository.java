@@ -24,4 +24,5 @@ public interface BoardRepository {
     void delete(Post post);
     void delete(long postId);
 
+    void plusHit(long postId);
 }

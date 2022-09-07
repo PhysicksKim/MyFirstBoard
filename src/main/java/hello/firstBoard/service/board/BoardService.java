@@ -23,6 +23,7 @@ public class BoardService {
     }
 
     public Post getPost(long postId) {
+        boardRepository.plusHit(postId);
         return boardRepository.getPost(postId);
     }
 

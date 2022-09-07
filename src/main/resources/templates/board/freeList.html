@@ -30,6 +30,7 @@
       <th>제목</th>
       <th>작성자</th>
       <th>작성일</th>
+      <th>조회수</th>
     </tr>
     </thead>
     <tbody>
@@ -38,6 +39,7 @@
       <td> <a th:text="${post.title}" th:href="|/board/free/${post.id}|"></a> </td>
       <td th:text="${post.writer}"> </td>
       <td th:text="${post.date}"> </td>
+      <td th:text="${post.hit}"> </td>
     </tr>
     </tbody>
   </table>
