@@ -36,7 +36,7 @@ public class BoardRepositoryPrototype implements BoardRepository {
             log.debug("ERROR OCCURED ; datasource DI error ");
         }
     }
-
+    // ALTER TABLE BOARD ADD (DELETEFLAG boolean default true);
     @Override
     public Post save(Post post) {
 
@@ -72,7 +72,8 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
     @Override
     public Post getPost(long postId) {
-        String sql = "SELECT * FROM BOARD where ID=:postId";
+        String sql = "SELECT * FROM BOARD " +
+                "WHERE ID=:postId AND DELETEFLAG=FALSE";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("postId", postId);
@@ -82,7 +83,8 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
     @Override
     public List<Post> getPostList() {
-        String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD";
+        String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
+                "WHERE DELETEFLAG=FALSE";
 
         try {
             return jdbcTemplate.query(sql, postRowMapper()); // List<Post> 반환
@@ -96,7 +98,7 @@ public class BoardRepositoryPrototype implements BoardRepository {
     public void update(Post post) {
         String sql = "UPDATE BOARD " +
                 "SET TITLE=:title, WRITER=:writer, CONTENT=:content " +
-                "WHERE ID=:id;";
+                "WHERE ID=:id AND DELETEFLAG=FALSE;";
         SqlParameterSource sqlParam = new BeanPropertySqlParameterSource(post);
 
         jdbcTemplate.update(sql, sqlParam);
@@ -112,7 +114,7 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
     @Override
     public void delete(long postId) {
-        String sql = "DELETE BOARD WHERE ID=:id";
+        String sql = "UPDATE BOARD SET DELETEFLAG=TRUE WHERE ID=:id";
 
         SqlParameterSource sqlParam = new MapSqlParameterSource()
                 .addValue("id", postId);
@@ -122,7 +124,8 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
     @Override
     public void plusHit(long postId){
-        String sql = "UPDATE BOARD SET HIT = HIT + 1 WHERE ID=:id";
+        String sql = "UPDATE BOARD SET HIT = HIT + 1 " +
+                "WHERE ID=:id AND DELETEFLAG=FALSE";
 
         SqlParameterSource sqlParam = new MapSqlParameterSource()
                 .addValue("id", postId);
