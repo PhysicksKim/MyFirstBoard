@@ -17,25 +17,29 @@ import java.util.List;
 @Slf4j
 public class freeBoardController {
 
-
-    // 해야 할 일
-    // 1. 게시판 페이징 구현
-    // 1-1. 일단 OFFSET 페이징으로 간단히 구현해봄
-    // 1-2. 그 다음 Cursor 페이징으로 구현
-
     private final BoardService boardService;
 
 
     // 게시글은
     // 글 번호 | 글 제목 | 작성자 | 작성일 로 보여줌
     @GetMapping("/board/free") // 게시판 첫 진입 (리스트)
-    public String freeBoardListTest(Model model) {
-        List<Post> postList = boardService.getPostList();
+    public String freeBoardFirstList(Model model,
+                                     @RequestParam(name = "lastPostId", defaultValue = "-1") Integer lastPostId) {
+        // 여기서 @RequestParam에서 defaultValue를 안해주면, 쿼리파라미터가 안넘어올 경우 에러가 난다.
+        // 근데 쿼리파라미터가 없으면 첫페이지로 지정하고 싶었기에, 위처럼 defaultValue = "-1" 로 했다
 
+        // 이제 여기다가 페이징 처리 추가
+        // (페이징 구현)
+
+        // 기본 첫 페이지 보여주도록
+        List<Post> postList = boardService.getPostList();
         model.addAttribute("postList", postList);
 
+
+        log.info("lastPostId = {}", lastPostId);
         return ViewPathConst.FREEBOARD_LIST;
     }
+
 
     @GetMapping("/board/free/{postId}") // postId 글 페이지
     public String freeBoardReadPost(@PathVariable long postId, Model model) {
@@ -73,7 +77,7 @@ public class freeBoardController {
         return "redirect:/board/free/"+post.getId();
     }
 
-    @PostMapping("/board/free/postDelete") // 글 삭제 요청  
+    @PostMapping("/board/free/postDelete") // 글 삭제 요청
     public String deletePost(@RequestParam long id) {
         boardService.deletePost(id);
         return "redirect:/";

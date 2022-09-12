@@ -1,10 +1,7 @@
 package hello.firstBoard.repository;
 
 import hello.firstBoard.domain.board.Post;
-import hello.firstBoard.domain.member.Member;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -48,13 +45,8 @@ public class BoardRepositoryPrototype implements BoardRepository {
         jdbcTemplate.update(sql, sqlParam, keyHolder);
 
         Map<String, Object> keys = keyHolder.getKeys();
-        // keys 에는 "ID" "DATE" 두 가지 있음
-//        log.info(keys.get("ID").toString());    // 예 : 3
-//        log.info(keys.get("DATE").toString());  // 예 : 2022-08-21 21:21:14.793822
-
         post.setId(Long.parseLong(keys.get("ID").toString()));
 
-        //        2022-08-21 21:21:14.793822
 
         String sqlDateString = keys.get("DATE").toString();
 
