@@ -128,4 +128,10 @@ public class BoardRepositoryPrototype implements BoardRepository {
     private RowMapper<Post> postRowMapper() {
         return BeanPropertyRowMapper.newInstance(Post.class);
     }
+
+    // Pagination --------
+    public int getLastPage(int postsPerPage) {
+        // 마지막 페이지 값 받아오는 쿼리 작성
+        return -1;
+    }
 }

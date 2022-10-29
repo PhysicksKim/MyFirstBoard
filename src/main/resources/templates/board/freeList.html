@@ -44,6 +44,31 @@
     </tbody>
   </table>
 
+  <!--여기는 페이징 처리 부분 -->
+  <!-- 부트스트랩 참고 https://getbootstrap.com/docs/4.0/components/pagination/ -->
+  <!--1. 앞부분 5페이지-->
+  <!--2. 뒷부분 5페이지-->
+  <!--3. 마지막  페이지-->
+
+  <nav aria-label="Page navigation example">
+    <div>
+    <ul class="pagination justify-content-center">
+      <li class="page-item"
+          th:classappend="${pagination.prevPages.length == 0 ? disabled : _}">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+      </li>
+
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+      <li class="page-item"
+          th:classappend="${pagination.nextPages.length == 0 ? disabled : _}">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+    </div>
+  </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

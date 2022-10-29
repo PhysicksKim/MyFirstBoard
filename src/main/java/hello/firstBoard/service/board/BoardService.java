@@ -34,4 +34,8 @@ public class BoardService {
     public void deletePost(long id) {
         boardRepository.delete(id);
     }
+
+    public int getLastPage(int postPerPage) {
+        return boardRepository.getLastPage(postPerPage);
+    }
 }

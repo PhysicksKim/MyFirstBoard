@@ -25,4 +25,9 @@ public interface BoardRepository {
     void delete(long postId);
 
     void plusHit(long postId);
+
+
+    // Pagination
+    int getLastPage(int postPerPage);
+
 }
