@@ -26,24 +26,15 @@ public class freeBoardController {
     @GetMapping("/board/free") // 게시판 첫 진입 (리스트)
     public String freeBoardFirstList(Model model,
                                      @RequestParam(name = "page", defaultValue = "1") Integer page,
-                                     @RequestParam(name = "pageSize", defaultValue = "5") Integer postPerPage) {
+                                     @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
         // 여기서 @RequestParam에서 defaultValue를 안해주면, 쿼리파라미터가 안넘어올 경우 에러가 난다.
         // 근데 쿼리파라미터가 없으면 첫페이지로 지정하고 싶었기에, 위처럼 defaultValue = "-1" 로 했다
 
-        Pagination pagination = new Pagination();
-        if(page == 1) {
-            pagination.setFirstPage();
-            pagination.setLastPage(boardService.getLastPage(postPerPage));
-        }
-        else {
-            pagination.setNowPage(page);
-            pagination.setLastPage(boardService.getLastPage(postPerPage));
-        }
+        // 시작 post , 끝 post, 현재 페이지 정보를 담고있음
+        Pagination pagination = new Pagination(page, pageSize);
 
-
-        // 기본 첫 페이지 보여주도록
         // 페이징에 따라서 포스트리스트 다르게 넣어서 출력해줘야함
-        List<Post> postList = boardService.getPostList();
+        List<Post> postList = boardService.getPostList(pagination);
         model.addAttribute("postList", postList);
         model.addAttribute("pagination", pagination);
 

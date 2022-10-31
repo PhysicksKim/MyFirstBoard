@@ -6,23 +6,31 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Data
+/**
+ * 게시판 아래에 출력해야하는 페이지 목록들
+ */
 public class Pagination {
+
     private int nowPage;
-    private int lastPage;
+    private int startPost;
+    private int pageSize;
 
-    private int[] prevPages;
-    private int[] nextPages;
+    public Pagination() {}
 
-    private int pageSize = 5;
+    public Pagination(int page, int pageSize) {
+        this.pageSize = pageSize;
 
-    public void setFirstPage(){
-        this.nowPage = 1;
-        this.prevPages = new int[0];
-
-        this.nextPages = new int[pageSize];
-        for(int i = 0 ; i<this.nextPages.length ; i++) {
-            nextPages[i] = i+1;
-        }
+        nowPage = page;
+        startPost   = (page-1)*pageSize;
     }
 
 }
+/*
+시작번호 : (페이지-1)*사이즈 + 1
+    ex1. 1page : (1-1)*10 + 1 = 1
+    ex2. 2page : (2-1)*10 + 1 = 11
+
+끝 번호 : 페이지*사이즈 or 시작번호+사이즈-1
+*/
+
+

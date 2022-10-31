@@ -1,5 +1,6 @@
 package hello.firstBoard.repository;
 
+import hello.firstBoard.domain.board.Pagination;
 import hello.firstBoard.domain.board.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -74,12 +75,17 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
-    public List<Post> getPostList() {
+    public List<Post> getPostList(Pagination pagination) {
         String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
-                "WHERE DELETEFLAG=FALSE";
+                "WHERE DELETEFLAG=FALSE " +
+                "ORDER BY ID DESC LIMIT :start, :size";
+        SqlParameterSource sqlParm = new MapSqlParameterSource()
+                .addValue("start", pagination.getStartPost())
+                .addValue("size", pagination.getPageSize());
 
+        log.info("start : {} , size : {} : ", pagination.getStartPost(), pagination.getPageSize());
         try {
-            return jdbcTemplate.query(sql, postRowMapper()); // List<Post> 반환
+            return jdbcTemplate.query(sql, sqlParm, postRowMapper()); // List<Post> 반환
         } catch (Exception e) {
             log.debug("ERROR : getPostList() query error",e);
         }

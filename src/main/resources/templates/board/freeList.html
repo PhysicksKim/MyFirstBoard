@@ -54,7 +54,7 @@
     <div>
     <ul class="pagination justify-content-center">
       <li class="page-item"
-          th:classappend="${pagination.prevPages.length == 0 ? disabled : _}">
+          th:classappend="${pagination.nowPage == 1 ? disabled : _}">
         <a class="page-link" href="#" tabindex="-1">Previous</a>
       </li>
 
@@ -63,7 +63,7 @@
       <li class="page-item"><a class="page-link" href="#">3</a></li>
 
       <li class="page-item"
-          th:classappend="${pagination.nextPages.length == 0 ? disabled : _}">
+          th:classappend="${pagination.nowPage == 0 ? disabled : _}">
         <a class="page-link" href="#">Next</a>
       </li>
     </ul>

@@ -1,5 +1,6 @@
 package hello.firstBoard.repository;
 
+import hello.firstBoard.domain.board.Pagination;
 import hello.firstBoard.domain.board.Post;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface BoardRepository {
 
     // Read
     Post getPost(long postId);
-    List<Post> getPostList(); // 페이징 기능을 구현하려면, 페이지당 글 수, 페이지 번호 등을 받아와야하는데 이건 나중에 구현
+    List<Post> getPostList(Pagination pagination);
 
     // Update
     void update(Post post);
@@ -28,6 +29,6 @@ public interface BoardRepository {
 
 
     // Pagination
-    int getLastPage(int postPerPage);
+    int getLastPage(int pageSize);
 
 }

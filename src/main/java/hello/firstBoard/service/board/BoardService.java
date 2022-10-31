@@ -1,5 +1,6 @@
 package hello.firstBoard.service.board;
 
+import hello.firstBoard.domain.board.Pagination;
 import hello.firstBoard.domain.board.Post;
 import hello.firstBoard.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class BoardService {
         return boardRepository.save(post);
     }
 
-    public List<Post> getPostList() {
-        return boardRepository.getPostList();
+    public List<Post> getPostList(Pagination pagination) {
+        return boardRepository.getPostList(pagination);
     }
 
     public Post getPost(long postId) {
@@ -35,7 +36,7 @@ public class BoardService {
         boardRepository.delete(id);
     }
 
-    public int getLastPage(int postPerPage) {
-        return boardRepository.getLastPage(postPerPage);
+    public int getLastPage(int pageSize) {
+        return boardRepository.getLastPage(pageSize);
     }
 }
