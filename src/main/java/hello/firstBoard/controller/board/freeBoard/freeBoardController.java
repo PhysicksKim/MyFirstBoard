@@ -32,11 +32,41 @@ public class freeBoardController {
 
         // 시작 post , 끝 post, 현재 페이지 정보를 담고있음
         Pagination pagination = new Pagination(page, pageSize);
+        int lastPage = boardService.getLastPage(pageSize);
+        log.info("lastPage : {} " , lastPage);
+
+        // pageButtons : 페이지 버튼 앞 뒤로 몇 개 표시할건가
+        // (ex. 4 => 1 2 3 4 | 5 | 6 7 8 9 )
+        int pageButtons = 4;
+
+        int prevPageStart = page - pageButtons < 0 ? 1 : page - pageButtons;
+        int nextPageEnd   = page + pageButtons > lastPage ? lastPage : page + pageButtons;
+
+        int prevPageLen = page - prevPageStart;
+        int nextPageLen = nextPageEnd - page;
+        int[] prevPageList = new int[prevPageLen];
+        int[] nextPageList = new int[nextPageLen];
+
+        // prevList 채워넣음
+        // 1 2 3 4 | 5 | 6 7 8
+        // prevLen : 4
+        int tempPage = prevPageStart;
+        for(int i = 0 ; i<prevPageLen ; i++)
+            prevPageList[i] = tempPage++;
+
+        tempPage = page+1;
+        for(int i = 0 ; i<nextPageLen ; i++)
+            nextPageList[i] = tempPage++;
+
+        log.info("prevPageList : {}", prevPageList);
+        log.info("nextPageList : {}", nextPageList);
 
         // 페이징에 따라서 포스트리스트 다르게 넣어서 출력해줘야함
         List<Post> postList = boardService.getPostList(pagination);
         model.addAttribute("postList", postList);
         model.addAttribute("pagination", pagination);
+        model.addAttribute("prevPageList", prevPageList);
+        model.addAttribute("nextPageList", nextPageList);
 
         return ViewPathConst.FREEBOARD_LIST;
     }

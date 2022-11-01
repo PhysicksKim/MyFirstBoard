@@ -29,6 +29,6 @@ public interface BoardRepository {
 
 
     // Pagination
-    int getLastPage(int pageSize);
+    int getTotalPost();
 
 }

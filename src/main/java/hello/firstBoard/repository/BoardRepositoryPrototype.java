@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,7 +84,8 @@ public class BoardRepositoryPrototype implements BoardRepository {
                 .addValue("start", pagination.getStartPost())
                 .addValue("size", pagination.getPageSize());
 
-        log.info("start : {} , size : {} : ", pagination.getStartPost(), pagination.getPageSize());
+        log.debug("start : {} , size : {} ", pagination.getStartPost(), pagination.getPageSize());
+
         try {
             return jdbcTemplate.query(sql, sqlParm, postRowMapper()); // List<Post> 반환
         } catch (Exception e) {
@@ -135,9 +137,16 @@ public class BoardRepositoryPrototype implements BoardRepository {
         return BeanPropertyRowMapper.newInstance(Post.class);
     }
 
-    // Pagination --------
-    public int getLastPage(int postsPerPage) {
+    public int getTotalPost() {
+        String sql = "SELECT COUNT(*) AS \"totalPost\" FROM BOARD WHERE DELETEFLAG=FALSE";
+
+        int totalPost =
+                jdbcTemplate.query(sql,
+                        (rs, rowNum)
+                                -> Integer.parseInt(rs.getString("totalPost")))
+                        .get(0);
+
         // 마지막 페이지 값 받아오는 쿼리 작성
-        return -1;
+        return totalPost;
     }
 }

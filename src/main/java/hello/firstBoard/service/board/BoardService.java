@@ -37,6 +37,6 @@ public class BoardService {
     }
 
     public int getLastPage(int pageSize) {
-        return boardRepository.getLastPage(pageSize);
+        return (int)Math.ceil(boardRepository.getTotalPost()/(double)pageSize);
     }
 }
