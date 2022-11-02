@@ -50,21 +50,31 @@
   <!--2. 뒷부분 5페이지-->
   <!--3. 마지막  페이지-->
 
+  <p>
+    <div th:text="|nowPage : ${pagination.nowPage}|" />
+  </p>
+
   <nav aria-label="Page navigation example">
     <div>
     <ul class="pagination justify-content-center">
       <li class="page-item"
-          th:classappend="${pagination.nowPage == 1 ? disabled : _}">
-        <a class="page-link" href="#" tabindex="-1">Previous</a>
+          th:classappend="${pagination.nowPage == 1} ? 'disabled'">
+        <a class="page-link" th:href="@{free(page=${pagination.nowPage}-1)}" tabindex="-1">Previous</a>
       </li>
 
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <th:block th:each="page : ${prevPageList}">
+        <li class="page-item"><a class="page-link" th:href="@{free(page=${page})}" th:text="${page}">1</a></li>
+      </th:block>
+
+      <li class="page-item"><a class="page-link disabled" th:text="${pagination.nowPage}"></a></li>
+
+      <th:block th:each="page : ${nextPageList}">
+        <li class="page-item"><a class="page-link" th:href="@{free(page=${page})}" th:text="${page}">1</a></li>
+      </th:block>
 
       <li class="page-item"
-          th:classappend="${pagination.nowPage == 0 ? disabled : _}">
-        <a class="page-link" href="#">Next</a>
+          th:classappend="${#lists.size(nextPageList) == 0} ? 'disabled'">
+        <a class="page-link" th:href="@{free(page=${pagination.nowPage}+1)}">Next</a>
       </li>
     </ul>
     </div>
