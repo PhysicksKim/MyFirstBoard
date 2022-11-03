@@ -15,6 +15,8 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    private static int pageButtons = 4; // 게시판 하단에 페이지 버튼 몇 개 보여줄지
+
     public Post savePost(Post post) {
         return boardRepository.save(post);
     }
@@ -39,4 +41,31 @@ public class BoardService {
     public int getLastPage(int pageSize) {
         return (int)Math.ceil(boardRepository.getTotalPost()/(double)pageSize);
     }
+
+    public int[] getPrevPageList(int page) {
+        int prevPageStart = page - pageButtons < 0 ? 1 : page - pageButtons;
+        int prevPageLen = page - prevPageStart;
+        int[] prevPageList = new int[prevPageLen];
+
+        int tempPage = prevPageStart;
+        for(int i = 0 ; i<prevPageLen ; i++)
+            prevPageList[i] = tempPage++;
+
+        return prevPageList;
+    }
+
+    public int[] getNextPageList(int page, int lastPage) {
+        int nextPageEnd   = page + pageButtons > lastPage ? lastPage : page + pageButtons;
+        int nextPageLen = nextPageEnd - page;
+        int[] nextPageList = new int[nextPageLen];
+
+        // nowPage 다음 값부터 담아야 하니까 +1 해줌.
+        // ex. 현재 3페이지면 4페이지부터 담아야하니까
+        int tempPage = page+1;
+        for(int i = 0 ; i<nextPageLen ; i++)
+            nextPageList[i] = tempPage++;
+
+        return nextPageList;
+    }
+
 }

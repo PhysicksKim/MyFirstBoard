@@ -7,24 +7,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Data
 /**
- * 게시판 아래에 출력해야하는 페이지 목록들
+ * nowPage : 현재 페이지
+ * startPost : 해당 페이지의 첫 포스트 id
+ * pageSize : 페이지마다 표시할 포스트 수
  */
 public class Pagination {
 
     private int nowPage;
-    private int startPost;
     private int pageSize;
 
-    public Pagination() {}
+    private int startPost;
 
     public Pagination(int page, int pageSize) {
+        this.nowPage = page;
         this.pageSize = pageSize;
 
-        nowPage = page;
-        startPost   = (page-1)*pageSize;
+        this.startPost = (page-1)*pageSize;
     }
-
 }
+
 /*
 시작번호 : (페이지-1)*사이즈 + 1
     ex1. 1page : (1-1)*10 + 1 = 1

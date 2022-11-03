@@ -30,40 +30,21 @@ public class freeBoardController {
         // 여기서 @RequestParam에서 defaultValue를 안해주면, 쿼리파라미터가 안넘어올 경우 에러가 난다.
         // 근데 쿼리파라미터가 없으면 첫페이지로 지정하고 싶었기에, 위처럼 defaultValue = "-1" 로 했다
 
-        // 시작 post , 끝 post, 현재 페이지 정보를 담고있음
+        // 1. 현재 몇 페이지인지, 한 페이지에 게시글 몇 개 보여줄건지 정보 담음
         Pagination pagination = new Pagination(page, pageSize);
+
+        // 2. 하단에 페이지 버튼 표시 관련 모델 데이터 생성
         int lastPage = boardService.getLastPage(pageSize);
-        log.info("lastPage : {} " , lastPage);
+        int[] prevPageList = boardService.getPrevPageList(page);
+        int[] nextPageList = boardService.getNextPageList(page, lastPage);
 
-        // pageButtons : 페이지 버튼 앞 뒤로 몇 개 표시할건가
-        // (ex. 4 => 1 2 3 4 | 5 | 6 7 8 9 )
-        int pageButtons = 4;
-
-        int prevPageStart = page - pageButtons < 0 ? 1 : page - pageButtons;
-        int nextPageEnd   = page + pageButtons > lastPage ? lastPage : page + pageButtons;
-
-        int prevPageLen = page - prevPageStart;
-        int nextPageLen = nextPageEnd - page;
-        int[] prevPageList = new int[prevPageLen];
-        int[] nextPageList = new int[nextPageLen];
-
-        // prevList 채워넣음
-        // 1 2 3 4 | 5 | 6 7 8
-        // prevLen : 4
-        int tempPage = prevPageStart;
-        for(int i = 0 ; i<prevPageLen ; i++)
-            prevPageList[i] = tempPage++;
-
-        tempPage = page+1;
-        for(int i = 0 ; i<nextPageLen ; i++)
-            nextPageList[i] = tempPage++;
-
-        log.info("prevPageList : {}", prevPageList);
-        log.info("nextPageList : {}", nextPageList);
-
-        // 페이징에 따라서 포스트리스트 다르게 넣어서 출력해줘야함
+        // 3. 페이지네이션 객체에 담긴 정보를 토대로, 다음
         List<Post> postList = boardService.getPostList(pagination);
+
+        // 페이지에 맞는 글 목록들을 담아서 넘겨줌
         model.addAttribute("postList", postList);
+
+        // 페이징과 관련된 정보들을 담아서 넘겨줌
         model.addAttribute("pagination", pagination);
         model.addAttribute("prevPageList", prevPageList);
         model.addAttribute("nextPageList", nextPageList);

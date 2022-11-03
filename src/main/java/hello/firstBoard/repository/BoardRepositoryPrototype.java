@@ -85,7 +85,6 @@ public class BoardRepositoryPrototype implements BoardRepository {
                 .addValue("size", pagination.getPageSize());
 
         log.debug("start : {} , size : {} ", pagination.getStartPost(), pagination.getPageSize());
-
         try {
             return jdbcTemplate.query(sql, sqlParm, postRowMapper()); // List<Post> 반환
         } catch (Exception e) {
