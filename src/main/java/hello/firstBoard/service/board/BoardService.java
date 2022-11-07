@@ -17,6 +17,13 @@ public class BoardService {
 
     private static int pageButtons = 4; // 게시판 하단에 페이지 버튼 몇 개 보여줄지
 
+    public boolean checkPostValidation(Post post) {
+        if (post.getWriter().trim().equals(""))
+            return false;
+
+        return true;
+    }
+
     public Post savePost(Post post) {
         return boardRepository.save(post);
     }

@@ -20,7 +20,6 @@ public class freeBoardController {
 
     private final BoardService boardService;
 
-
     // 게시글은
     // 글 번호 | 글 제목 | 작성자 | 작성일 로 보여줌
     @GetMapping("/board/free") // 게시판 첫 진입 (리스트)
@@ -76,6 +75,13 @@ public class freeBoardController {
     @PostMapping("/board/write") // 글 작성 요청
     public String writePost(@ModelAttribute PostWrite postWrite) {
         Post post = new Post(postWrite);
+
+        if (!boardService.checkPostValidation(post)) {
+            // 에러 담아서 반환
+
+            // return "redirect:/board/free/write";
+            return "redirect:/";
+        }
 
         Post savedPost = boardService.savePost(post);
 

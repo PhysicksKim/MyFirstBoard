@@ -41,20 +41,23 @@ public class SignupController {
         log.debug("Post /singUp request");
         log.debug("MemberSignupForm = {}", memberSignupForm);
 
+        // 실패 로직
         if (bindingResult.hasErrors()) {
             log.debug("errors = {}", bindingResult);
             return ViewPathConst.SIGNUP_PAGE;
         }
 
-        // 성공 로직
+        // 바인딩 성공시 로직
         Member member = new Member(memberSignupForm);
         Member savedMember = memberRepository.save(member);
 
+        // 아이디 중복 유저 있을시 로직
         if (savedMember == null) {
             bindingResult.rejectValue("userId", "notUniqueId");
             return ViewPathConst.SIGNUP_PAGE;
         }
 
-        return ViewPathConst.LOGIN_PAGE;
+        // 최종적으로 회원가입 성공시
+        return "redirect:/login";
     }
 }
