@@ -60,7 +60,7 @@ public class BoardRepositoryPrototype implements BoardRepository {
         } catch (ParseException e) {
             log.error("ERROR : {}",this.getClass());
             log.error("save() method Date Parse Error : " , e);
-            return post;
+            return null;
         }
     }
 

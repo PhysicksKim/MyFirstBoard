@@ -5,10 +5,14 @@ import hello.firstBoard.domain.board.Pagination;
 import hello.firstBoard.domain.board.Post;
 import hello.firstBoard.domain.board.PostWrite;
 import hello.firstBoard.service.board.BoardService;
+import hello.firstBoard.validator.PostWriteValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +23,12 @@ import java.util.List;
 public class freeBoardController {
 
     private final BoardService boardService;
+    private final PostWriteValidator postWriteValidator;
+
+    @InitBinder("postWrite") // "postWrite" 를 적어주지 않으면 모든 객체에 영향을 미친다
+    public void initBoardValidator(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(postWriteValidator);
+    }
 
     // 게시글은
     // 글 번호 | 글 제목 | 작성자 | 작성일 로 보여줌
@@ -73,17 +83,22 @@ public class freeBoardController {
     }
 
     @PostMapping("/board/write") // 글 작성 요청
-    public String writePost(@ModelAttribute PostWrite postWrite) {
+    public String writePost(@Validated @ModelAttribute PostWrite postWrite,
+                            BindingResult bindingResult) {
+
+        // 에러 발생시
+        if (bindingResult.hasErrors())
+            return ViewPathConst.FREEBOARD_WRITEERROR;
+
+        // @Validated 처리 후에도, 에러가 없을 경우
         Post post = new Post(postWrite);
+        Post savedPost = boardService.savePost(post); // 글 id를 갖고와야하므로
 
-        if (!boardService.checkPostValidation(post)) {
-            // 에러 담아서 반환
+        // 글 id 에러시 처리
+        // 글 id 에러시 boardRepository 에서 null 반환함.
+        if (savedPost == null)
+            return "redirect:/error";
 
-            // return "redirect:/board/free/write";
-            return "redirect:/";
-        }
-
-        Post savedPost = boardService.savePost(post);
 
         return "redirect:/board/free/"+savedPost.getId();
     }

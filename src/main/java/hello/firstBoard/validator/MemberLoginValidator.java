@@ -13,7 +13,7 @@ public class MemberLoginValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        log.info("login validator ; supports()");
+        log.debug("login validator ; supports()");
         return MemberLoginForm.class.isAssignableFrom(clazz);
     }
 
@@ -27,7 +27,8 @@ public class MemberLoginValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userId", "required", "디폴트 메세지, 필수 값입니다");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "required", "디폴트 메세지, 필수 값입니다");
 
-        errors.getAllErrors().stream().forEach(objectError -> log.debug(objectError.toString()));
+        if(log.isDebugEnabled())
+            errors.getAllErrors().stream().forEach(objectError -> log.debug(objectError.toString()));
 
         // UserId       VARCHAR(20)
         // UserPassword VARCHAR(30)
