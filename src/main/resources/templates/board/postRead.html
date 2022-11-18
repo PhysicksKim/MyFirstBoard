@@ -49,10 +49,12 @@
     글 수정
   </button>
 
-  <form th:field="'postDelete'" th:object="${post}">
+  <form th:field="'postDelete'"
+        th:action="|@{/board/free}|"
+        th:method="delete"
+        th:object="${post}">
     <input type="hidden" th:field="*{id}">
-    <button class="btn btn-primary" formmethod="post"
-            formaction="/board/free/postDelete" type="submit">
+    <button class="btn btn-primary" type="submit">
       글 삭제
     </button>
   </form>

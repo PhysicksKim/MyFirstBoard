@@ -75,14 +75,14 @@ public class freeBoardController {
         Post post = boardService.getPost(postId);
         model.addAttribute("post", post);
 
-        return "board/postUpdate";
+        return ViewPathConst.FREEBOARD_UPDATE;
     }
 
     @GetMapping("free/write") // 새 글 작성 페이지
     public String freeBoardWritePost(Model model) {
         model.addAttribute(new PostWrite());
         log.info(model.toString());
-        return "board/postWrite";
+        return ViewPathConst.FREEBOARD_WRITE;
     }
 
     @PostMapping("write") // 글 작성 요청
@@ -114,9 +114,9 @@ public class freeBoardController {
         return "redirect:/board/free/"+post.getId();
     }
 
-    @PostMapping("free/postDelete") // 글 삭제 요청
+    @DeleteMapping("free")
     public String deletePost(@RequestParam long id) {
         boardService.deletePost(id);
-        return "redirect:/";
+        return "redirect:/board/free";
     }
 }
