@@ -12,18 +12,20 @@
         }
     </style>
 </head>
+
 <body>
 <nav th:replace="~{fragment/nav :: navbar}"></nav>
-
-<h1> 자유 게시판 </h1>
+<div class="container">
+    <h1 style="margin-top:20px; margin-bottom:20px;"> 자유 게시판 </h1>
+</div>
 <div class="container">
     <form name="postWriteForm" id="postWriteForm"
           th:action th:object="${postWrite}" method="post">
 
         <table th:class="table">
             <tr class="row">
-                <td th:text="'글 제목'" class="col col-auto"></td>
-                <td class="col">
+                <td th:text="'글 제목'" class="col-1"></td>
+                <td class="col-11">
                     <input id="title" name="title" type="text" class="form-control"
                             placeholder="제목을 입력하세요" th:field="*{title}">
                     <div th:errors="*{title}" th:errorclass="|error-text|">
@@ -32,12 +34,12 @@
                 </td>
             </tr>
             <tr class="row">
-                <td th:text="'작성자'" class="col col-auto"></td>
-                <td class="col">
+                <td th:text="'작성자'" class="col-1"></td>
+                <td class="col-11">
                     <input id="writer" name="writer" type="text" class="form-control"
                             placeholder="작성자" th:field="*{writer}">
                     <div th:errors="*{writer}" th:errorclass="|error-text|">
-                        wrtier 오류
+                        wrtier <오류></오류>
                     </div>
                 </td>
             </tr>
