@@ -2,6 +2,8 @@ package hello.firstBoard.repository;
 
 import hello.firstBoard.domain.board.Pagination;
 import hello.firstBoard.domain.board.Post;
+import hello.firstBoard.utils.SQLDateUtils;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,10 +16,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Repository
@@ -49,19 +48,12 @@ public class BoardRepositoryPrototype implements BoardRepository {
         Map<String, Object> keys = keyHolder.getKeys();
         post.setId(Long.parseLong(keys.get("ID").toString()));
 
-
+        // -- sql이 string으로 던져주는 date값을
+        // post에 있는 LocalDateTime date 필드에 파싱 시켜주기
         String sqlDateString = keys.get("DATE").toString();
+        post.setDate(SQLDateUtils.SQLDateStrToLocalDateTime(sqlDateString));
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
-        try {
-            post.setDate(formatter.parse(sqlDateString));
-            return post;
-        } catch (ParseException e) {
-            log.error("ERROR : {}",this.getClass());
-            log.error("save() method Date Parse Error : " , e);
-            return null;
-        }
+        return post;
     }
 
     @Override

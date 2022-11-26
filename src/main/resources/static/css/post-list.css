@@ -1,0 +1,33 @@
+.postlist-table {
+    width:100%;
+    table-layout: fixed;
+}
+
+.postlist-id-td {
+    width:5%;
+}
+
+.postlist-title-td {
+    width:auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.postlist-writer-td {
+    width:10%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.postlist-date-td {
+    width:10%;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.postlist-hit-td {
+    width:5%;
+}

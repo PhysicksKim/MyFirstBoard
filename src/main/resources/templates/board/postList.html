@@ -6,6 +6,8 @@
   <title>MyFirstBoard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
         rel="stylesheet">
+  <link href="/css/post-list.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
@@ -24,23 +26,23 @@
     </div>
 
 
-    <table class="table">
+    <table class="table postlist-table">
       <thead>
       <tr>
-        <th>글 번호</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>작성일</th>
-        <th>조회수</th>
+        <th class="postlist-id-td">글 번호</th>
+        <th class="postlist-title-td">제목</th>
+        <th class="postlist-writer-td">작성자</th>
+        <th class="postlist-date-td">작성일</th>
+        <th class="postlist-hit-td">조회수</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="post : ${postList}">
-        <td th:text="${post.id}"> </td>
-        <td> <a th:text="${post.title}" th:href="|/board/free/${post.id}|"></a> </td>
-        <td th:text="${post.writer}"> </td>
-        <td th:text="${post.date}"> </td>
-        <td th:text="${post.hit}"> </td>
+        <td class="postlist-id-td" th:text="${post.id}"> </td>
+        <td class="postlist-title-td"> <a th:text="${post.title}" th:href="|/board/free/${post.id}|"></a> </td>
+        <td class="postlist-writer-td" th:text="${post.writer}"> </td>
+        <td class="postlist-date-td" th:text="${post.date}"> </td>
+        <td class="postlist-hit-td" th:text="${post.hit}"> </td>
       </tr>
       </tbody>
     </table>

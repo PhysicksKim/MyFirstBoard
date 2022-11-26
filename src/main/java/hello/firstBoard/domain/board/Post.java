@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -20,7 +21,7 @@ public class Post {
     private String title;
     private String writer;
     private String content;
-    private Date date;
+    private LocalDateTime date;
     private int hit;
 
     public Post(PostWrite postWrite) {
