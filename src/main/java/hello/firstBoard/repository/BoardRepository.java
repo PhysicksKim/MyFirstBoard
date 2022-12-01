@@ -1,6 +1,6 @@
 package hello.firstBoard.repository;
 
-import hello.firstBoard.domain.board.Pagination;
+import hello.firstBoard.domain.board.PageVO;
 import hello.firstBoard.domain.board.Post;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface BoardRepository {
 
     // Read
     Post getPost(long postId);
-    List<Post> getPostList(Pagination pagination);
+    List<Post> getPostList(PageVO pagination);
 
     // Update
     void update(Post post);

@@ -1,12 +1,11 @@
 package hello.firstBoard.service.board;
 
-import hello.firstBoard.domain.board.Pagination;
+import hello.firstBoard.domain.board.PageVO;
 import hello.firstBoard.domain.board.Post;
 import hello.firstBoard.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class BoardService {
         return boardRepository.save(post);
     }
 
-    public List<Post> getPostList(Pagination pagination) {
+    public List<Post> getPostList(PageVO pagination) {
         List<Post> postList = boardRepository.getPostList(pagination);
         log.info(postList.toString());
         return postList;

@@ -1,6 +1,6 @@
 package hello.firstBoard.repository;
 
-import hello.firstBoard.domain.board.Pagination;
+import hello.firstBoard.domain.board.PageVO;
 import hello.firstBoard.domain.board.Post;
 import hello.firstBoard.utils.SQLDateUtils;
 
@@ -68,7 +68,7 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
-    public List<Post> getPostList(Pagination pagination) {
+    public List<Post> getPostList(PageVO pagination) {
         String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
                 "WHERE DELETEFLAG=FALSE " +
                 "ORDER BY ID DESC LIMIT :start, :size";

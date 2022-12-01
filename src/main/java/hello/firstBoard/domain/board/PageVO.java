@@ -1,7 +1,6 @@
 package hello.firstBoard.domain.board;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -11,14 +10,14 @@ import lombok.extern.slf4j.Slf4j;
  * startPost : 해당 페이지의 첫 포스트 id
  * pageSize : 페이지마다 표시할 포스트 수
  */
-public class Pagination {
+public class PageVO {
 
     private int nowPage;
     private int pageSize;
 
     private int startPost;
 
-    public Pagination(int page, int pageSize) {
+    public PageVO(int page, int pageSize) {
         this.nowPage = page;
         this.pageSize = pageSize;
 

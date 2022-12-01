@@ -1,7 +1,7 @@
 package hello.firstBoard.controller.board.freeBoard;
 
 import hello.firstBoard.consts.ViewPathConst;
-import hello.firstBoard.domain.board.Pagination;
+import hello.firstBoard.domain.board.PageVO;
 import hello.firstBoard.domain.board.Post;
 import hello.firstBoard.domain.board.PostWrite;
 import hello.firstBoard.service.board.BoardService;
@@ -41,7 +41,7 @@ public class freeBoardController {
         // 근데 쿼리파라미터가 없으면 첫페이지로 지정하고 싶었기에, 위처럼 defaultValue = "-1" 로 했다
 
         // 1. 현재 몇 페이지인지, 한 페이지에 게시글 몇 개 보여줄건지 정보 담음
-        Pagination pagination = new Pagination(page, pageSize);
+        PageVO pagination = new PageVO(page, pageSize);
 
         // 2. 하단에 페이지 버튼 표시 관련 모델 데이터 생성
         int lastPage = boardService.getLastPage(pageSize);
