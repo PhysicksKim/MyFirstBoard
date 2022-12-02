@@ -1,7 +1,9 @@
 package hello.firstBoard.repository;
 
-import hello.firstBoard.domain.board.PageVO;
+import hello.firstBoard.domain.board.Page;
 import hello.firstBoard.domain.board.Post;
+import hello.firstBoard.domain.board.Search;
+import hello.firstBoard.domain.board.SearchType;
 import hello.firstBoard.utils.SQLDateUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +70,7 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
-    public List<Post> getPostList(PageVO pagination) {
+    public List<Post> getPostList(Page pagination) {
         String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
                 "WHERE DELETEFLAG=FALSE " +
                 "ORDER BY ID DESC LIMIT :start, :size";
@@ -84,6 +86,41 @@ public class BoardRepositoryPrototype implements BoardRepository {
         }
         return null;
     }
+
+    @Override
+    public List<Post> getPostSearchList(Search search) {
+        if(search.getSearchType() == null) {
+
+        }
+
+        // 동적 쿼리 처리가 필요함
+        /*
+        앞쿼리   : SELECT * FROM BOARD WHERE DELETEFLAG=FALSE and
+        중간쿼리 : 동적 쿼리로 추가
+        뒷쿼리   : ORDER BY ID DESC LIMIT :start, :size
+         */
+        StringBuilder dynamicQuery = new StringBuilder();
+        switch (search.getSearchType()) {
+            case title: dynamicQuery.append("TITLE LIKE CONCAT('%',");
+            case writer: break;
+            case content: break;
+            case titleOrContent: break;
+            default: log.info("SearchType 값이 이상합니다!! ::" + search.getSearchType()); return null;
+        }
+
+
+
+        // 아래는 그냥 게시판 기본 페이지들 보여주는 부분
+        String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
+                "WHERE DELETEFLAG=FALSE AND" +
+                "ORDER BY ID DESC LIMIT :start, :size";
+        SqlParameterSource sqlParm = new MapSqlParameterSource()
+                .addValue("start", search.getStartPost())
+                .addValue("size", search.getPageSize());
+
+        return jdbcTemplate.query(sql, sqlParm, postRowMapper()); // List<Post> 반환
+    }
+
 
     @Override
     public void update(Post post) {

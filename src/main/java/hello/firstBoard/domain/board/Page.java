@@ -1,23 +1,26 @@
 package hello.firstBoard.domain.board;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Data
+@NoArgsConstructor // 자식인 Search가 Lombok에서 super() 생성자를 사용하므로 NoArgsConstructor가 필요하다
 /**
  * nowPage : 현재 페이지
  * startPost : 해당 페이지의 첫 포스트 id
  * pageSize : 페이지마다 표시할 포스트 수
  */
-public class PageVO {
+public class Page {
 
-    private int nowPage;
-    private int pageSize;
+    protected int nowPage;
+    protected int pageSize;
 
-    private int startPost;
+    // startPost 의 id가 아니라, 얼마나 오프셋된 포스트부터 보여줄건가를 뜻함
+    protected int startPost;
 
-    public PageVO(int page, int pageSize) {
+    public Page(int page, int pageSize) {
         this.nowPage = page;
         this.pageSize = pageSize;
 

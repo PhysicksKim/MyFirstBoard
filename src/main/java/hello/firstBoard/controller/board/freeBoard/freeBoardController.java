@@ -1,9 +1,7 @@
 package hello.firstBoard.controller.board.freeBoard;
 
 import hello.firstBoard.consts.ViewPathConst;
-import hello.firstBoard.domain.board.PageVO;
-import hello.firstBoard.domain.board.Post;
-import hello.firstBoard.domain.board.PostWrite;
+import hello.firstBoard.domain.board.*;
 import hello.firstBoard.service.board.BoardService;
 import hello.firstBoard.validator.PostWriteValidator;
 import lombok.RequiredArgsConstructor;
@@ -31,17 +29,15 @@ public class freeBoardController {
         webDataBinder.addValidators(postWriteValidator);
     }
 
-    // 게시글은
-    // 글 번호 | 글 제목 | 작성자 | 작성일 로 보여줌
-    @GetMapping("free") // 게시판 첫 진입 (리스트)
-    public String freeBoardFirstList(Model model,
-                                     @RequestParam(name = "page", defaultValue = "1") Integer page,
-                                     @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
+    @GetMapping("free") // 게시판 글 목록 보여주는 페이지
+    public String pagePostList(Model model,
+                               @RequestParam(name = "page", defaultValue = "1") Integer page,
+                               @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
         // 여기서 @RequestParam에서 defaultValue를 안해주면, 쿼리파라미터가 안넘어올 경우 에러가 난다.
         // 근데 쿼리파라미터가 없으면 첫페이지로 지정하고 싶었기에, 위처럼 defaultValue = "-1" 로 했다
 
         // 1. 현재 몇 페이지인지, 한 페이지에 게시글 몇 개 보여줄건지 정보 담음
-        PageVO pagination = new PageVO(page, pageSize);
+        Page pagination = new Page(page, pageSize);
 
         // 2. 하단에 페이지 버튼 표시 관련 모델 데이터 생성
         int lastPage = boardService.getLastPage(pageSize);
@@ -62,8 +58,25 @@ public class freeBoardController {
         return ViewPathConst.FREEBOARD_LIST;
     }
 
+    //http://localhost:8080/board/free/search?searchType=제목&searchKeyword=asd
+    @GetMapping("free/search")
+    public String pageSearchList(Model model,
+                                 @RequestParam(name = "searchType") String searchTypeStr,
+                                 @RequestParam(name = "searchKeyword") String searchKeyword,
+                                 @RequestParam(name = "page", defaultValue = "1") Integer page,
+                                 @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
+        SearchType searchType = SearchType.valueOf(searchTypeStr);
+        Search search = new Search(searchKeyword, searchType);
+        // log.info("searchType : {}", searchTypeStr);
+        // log.info("searchKeyword : {}", searchKeyword);
+        // log.info("Object Search : {}", search);
+
+
+        return "home";
+    }
+
     @GetMapping("free/{postId}") // postId 글 페이지
-    public String freeBoardReadPost(@PathVariable long postId, Model model) {
+    public String pagePostRead(@PathVariable long postId, Model model) {
         Post post = boardService.getPost(postId);
         model.addAttribute("post", post);
 
@@ -71,7 +84,7 @@ public class freeBoardController {
     }
 
     @GetMapping("free/write/{postId}") // postId 글 수정 페이지
-    public String freeBoardWritePost(@PathVariable long postId, Model model) {
+    public String pagePostUpdate(@PathVariable long postId, Model model) {
         Post post = boardService.getPost(postId);
         model.addAttribute("post", post);
 
@@ -79,7 +92,7 @@ public class freeBoardController {
     }
 
     @GetMapping("free/write") // 새 글 작성 페이지
-    public String freeBoardWritePost(Model model) {
+    public String pagePostWrite(Model model) {
         model.addAttribute(new PostWrite());
         log.info(model.toString());
         return ViewPathConst.FREEBOARD_WRITE;

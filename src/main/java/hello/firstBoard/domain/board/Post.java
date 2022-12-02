@@ -14,8 +14,7 @@ import java.util.Date;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class Post {
-
-    // ID TITLE WRITER CONTENT DATE
+    // SQL table names : ID TITLE WRITER CONTENT DATE
 
     @EqualsAndHashCode.Include private long id;
     private String title;

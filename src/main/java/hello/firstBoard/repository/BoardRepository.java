@@ -1,7 +1,8 @@
 package hello.firstBoard.repository;
 
-import hello.firstBoard.domain.board.PageVO;
+import hello.firstBoard.domain.board.Page;
 import hello.firstBoard.domain.board.Post;
+import hello.firstBoard.domain.board.Search;
 
 import java.util.List;
 
@@ -15,7 +16,11 @@ public interface BoardRepository {
 
     // Read
     Post getPost(long postId);
-    List<Post> getPostList(PageVO pagination);
+    List<Post> getPostList(Page pagination);
+
+    // Read (Search)
+    List<Post> getPostSearchList(Search search);
+    // SELECT * FROM BOARD WHERE DELETEFLAG=FALSE and WRITER LIKE CONCAT('%','test','%');
 
     // Update
     void update(Post post);

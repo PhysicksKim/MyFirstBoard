@@ -1,6 +1,6 @@
 package hello.firstBoard.service.board;
 
-import hello.firstBoard.domain.board.PageVO;
+import hello.firstBoard.domain.board.Page;
 import hello.firstBoard.domain.board.Post;
 import hello.firstBoard.repository.BoardRepository;
 
@@ -30,9 +30,8 @@ public class BoardService {
         return boardRepository.save(post);
     }
 
-    public List<Post> getPostList(PageVO pagination) {
+    public List<Post> getPostList(Page pagination) {
         List<Post> postList = boardRepository.getPostList(pagination);
-        log.info(postList.toString());
         return postList;
     }
 
