@@ -61,18 +61,34 @@ public class freeBoardController {
     //http://localhost:8080/board/free/search?searchType=제목&searchKeyword=asd
     @GetMapping("free/search")
     public String pageSearchList(Model model,
-                                 @RequestParam(name = "searchType") String searchTypeStr,
-                                 @RequestParam(name = "searchKeyword") String searchKeyword,
+                                @ModelAttribute SearchDTO searchDTO,
                                  @RequestParam(name = "page", defaultValue = "1") Integer page,
                                  @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
-        SearchType searchType = SearchType.valueOf(searchTypeStr);
-        Search search = new Search(searchKeyword, searchType);
-        // log.info("searchType : {}", searchTypeStr);
-        // log.info("searchKeyword : {}", searchKeyword);
-        // log.info("Object Search : {}", search);
+        // ----- log용 ------- 나중에 지움
+        SearchDAO searchDAO = new SearchDAO(searchDTO);
+        log.info("searchDTO : {}" , searchDTO);
+        log.info("searchDAO : {}" , searchDAO);
+        // ---------------------------
+
+        List<Post> searchList = boardService.getSearchList(searchDTO);
+        Page pagination = new Page(page, pageSize);
+
+        log.info("{}", pagination);
+        int lastPage = boardService.getSearchLastPage(pageSize, searchDAO); // 검색결과
+        log.info("{}", lastPage);
+        int[] prevPageList = boardService.getPrevPageList(page);
+        int[] nextPageList = boardService.getNextPageList(page, lastPage);
+
+        // 페이지에 맞는 글 목록들을 담아서 넘겨줌
+        model.addAttribute("postList", searchList);
+
+        // 페이징과 관련된 정보들을 담아서 넘겨줌
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("prevPageList", prevPageList);
+        model.addAttribute("nextPageList", nextPageList);
 
 
-        return "home";
+        return ViewPathConst.FREEBOARD_LIST;
     }
 
     @GetMapping("free/{postId}") // postId 글 페이지

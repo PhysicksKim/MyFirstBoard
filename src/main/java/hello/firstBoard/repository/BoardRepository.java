@@ -2,10 +2,11 @@ package hello.firstBoard.repository;
 
 import hello.firstBoard.domain.board.Page;
 import hello.firstBoard.domain.board.Post;
-import hello.firstBoard.domain.board.Search;
+import hello.firstBoard.domain.board.SearchDAO;
 
 import java.util.List;
 
+// ID TITLE WRITER CONTENT DATE HIT DELETEFLAG
 public interface BoardRepository {
 
     // 글 목록, 글 작성, 글 삭제, 글 수정 등을 담당함.
@@ -19,8 +20,9 @@ public interface BoardRepository {
     List<Post> getPostList(Page pagination);
 
     // Read (Search)
-    List<Post> getPostSearchList(Search search);
+    List<Post> getPostSearchList(SearchDAO searchDAO);
     // SELECT * FROM BOARD WHERE DELETEFLAG=FALSE and WRITER LIKE CONCAT('%','test','%');
+    int getSearchTotalPost(SearchDAO searchDAO);
 
     // Update
     void update(Post post);

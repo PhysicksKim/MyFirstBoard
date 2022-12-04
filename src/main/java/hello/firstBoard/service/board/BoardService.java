@@ -2,6 +2,8 @@ package hello.firstBoard.service.board;
 
 import hello.firstBoard.domain.board.Page;
 import hello.firstBoard.domain.board.Post;
+import hello.firstBoard.domain.board.SearchDAO;
+import hello.firstBoard.domain.board.SearchDTO;
 import hello.firstBoard.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -52,6 +54,19 @@ public class BoardService {
         return (int)Math.ceil(boardRepository.getTotalPost()/(double)pageSize);
     }
 
+    public List<Post> getSearchList(SearchDTO searchDTO) {
+        SearchDAO searchDAO = new SearchDAO(searchDTO);
+        List<Post> postSearchList = boardRepository.getPostSearchList(searchDAO);
+        log.info("searchDAO : {}", searchDAO);
+        log.info("postSearchList : {}", postSearchList);
+        return postSearchList;
+    }
+
+    public int getSearchLastPage(int pageSize, SearchDAO searchDAO) {
+        // 만약 검색결과가 0이면 0을 리턴함
+        return (int)Math.ceil(boardRepository.getSearchTotalPost(searchDAO)/(double)pageSize);
+    }
+
     public int[] getPrevPageList(int page) {
         int prevPageStart = page - pageButtons < 0 ? 1 : page - pageButtons;
         int prevPageLen = page - prevPageStart;
@@ -67,7 +82,7 @@ public class BoardService {
     public int[] getNextPageList(int page, int lastPage) {
         int nextPageEnd   = page + pageButtons > lastPage ? lastPage : page + pageButtons;
         int nextPageLen = nextPageEnd - page;
-        int[] nextPageList = new int[nextPageLen];
+        int[] nextPageList = new int[nextPageLen > 0 ? nextPageLen : 0];
 
         // nowPage 다음 값부터 담아야 하니까 +1 해줌.
         // ex. 현재 3페이지면 4페이지부터 담아야하니까

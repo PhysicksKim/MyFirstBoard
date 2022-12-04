@@ -1,9 +1,6 @@
 package hello.firstBoard.repository;
 
-import hello.firstBoard.domain.board.Page;
-import hello.firstBoard.domain.board.Post;
-import hello.firstBoard.domain.board.Search;
-import hello.firstBoard.domain.board.SearchType;
+import hello.firstBoard.domain.board.*;
 import hello.firstBoard.utils.SQLDateUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -74,13 +71,13 @@ public class BoardRepositoryPrototype implements BoardRepository {
         String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
                 "WHERE DELETEFLAG=FALSE " +
                 "ORDER BY ID DESC LIMIT :start, :size";
-        SqlParameterSource sqlParm = new MapSqlParameterSource()
+        SqlParameterSource sqlParam = new MapSqlParameterSource()
                 .addValue("start", pagination.getStartPost())
                 .addValue("size", pagination.getPageSize());
 
         log.debug("start : {} , size : {} ", pagination.getStartPost(), pagination.getPageSize());
         try {
-            return jdbcTemplate.query(sql, sqlParm, postRowMapper()); // List<Post> 반환
+            return jdbcTemplate.query(sql, sqlParam, postRowMapper()); // List<Post> 반환
         } catch (Exception e) {
             log.debug("ERROR : getPostList() query error",e);
         }
@@ -88,39 +85,68 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
-    public List<Post> getPostSearchList(Search search) {
-        if(search.getSearchType() == null) {
-
-        }
-
-        // 동적 쿼리 처리가 필요함
-        /*
-        앞쿼리   : SELECT * FROM BOARD WHERE DELETEFLAG=FALSE and
-        중간쿼리 : 동적 쿼리로 추가
-        뒷쿼리   : ORDER BY ID DESC LIMIT :start, :size
+    public List<Post> getPostSearchList(SearchDAO searchDAO) {
+        /* 동적 쿼리 처리가 필요함
+        ex.
+         SELECT * FROM BOARD WHERE DELETEFLAG=FALSE AND
+            TITLE LIKE CONCAT('%',':searchKeyword','%')
+            ORDER BY ID DESC LIMIT :start, :size ;
          */
-        StringBuilder dynamicQuery = new StringBuilder();
-        switch (search.getSearchType()) {
-            case title: dynamicQuery.append("TITLE LIKE CONCAT('%',");
-            case writer: break;
-            case content: break;
-            case titleOrContent: break;
-            default: log.info("SearchType 값이 이상합니다!! ::" + search.getSearchType()); return null;
-        }
 
+        // (a) 앞쿼리
+        StringBuilder sql = new StringBuilder()
+                .append("SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD WHERE DELETEFLAG=FALSE AND ");
 
+        // (b) 동적쿼리
+        /*
+        SELECT * FROM BOARD
+          WHERE DELETEFLAG=FALSE AND
+          ( TITLE LIKE CONCAT('%', '테스트', '%') OR CONTENT LIKE CONCAT('%', '테스트', '%') )
+          ORDER BY ID DESC LIMIT 5
+         */
+        searchTypeDynamicQuery(searchDAO.getSearchType(), sql);
 
-        // 아래는 그냥 게시판 기본 페이지들 보여주는 부분
-        String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
-                "WHERE DELETEFLAG=FALSE AND" +
-                "ORDER BY ID DESC LIMIT :start, :size";
-        SqlParameterSource sqlParm = new MapSqlParameterSource()
-                .addValue("start", search.getStartPost())
-                .addValue("size", search.getPageSize());
+        // (c) id순 정렬 쿼리
+        sql.append("ORDER BY ID DESC LIMIT :start, :size ;");
+        SqlParameterSource sqlParam = new MapSqlParameterSource()
+                .addValue("searchKeyword", searchDAO.getSearchKeyword())
+                .addValue("start", searchDAO.getStartPost())
+                .addValue("size", searchDAO.getPageSize());
 
-        return jdbcTemplate.query(sql, sqlParm, postRowMapper()); // List<Post> 반환
+        log.info("searchDAO.start : {}", searchDAO.getStartPost());
+        log.info("searchDAO.size : {}", searchDAO.getPageSize());
+        log.info("sql query string : {}", sql.toString());
+        log.info("sqlParm : {}", sqlParam);
+
+        // List<Post> query = jdbcTemplate.query("SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
+        //                 "WHERE DELETEFLAG=FALSE AND TITLE LIKE CONCAT('%','테스트','%') " +
+        //                 "ORDER BY ID DESC LIMIT 0, 5 ;"
+        //         , postRowMapper());
+
+        // log.info("디버깅용으로 만들어본 쌩짜쿼리 : {}", query);
+
+        return jdbcTemplate.query(sql.toString(), sqlParam, postRowMapper()); // List<Post> 반환
     }
 
+    @Override
+    public int getSearchTotalPost(SearchDAO searchDAO) {
+        /*
+        예시 쿼리
+        SELECT COUNT(*) FROM BOARD
+          WHERE DELETEFLAG=FALSE
+          AND ( TITLE LIKE CONCAT('%', '테스트', '%') OR CONTENT LIKE CONCAT('%', '테스트', '%') )
+         */
+        StringBuilder sql = new StringBuilder()
+                .append("SELECT COUNT(*) FROM BOARD WHERE DELETEFLAG=FALSE AND ");
+        searchTypeDynamicQuery(searchDAO.getSearchType(), sql);
+
+        SqlParameterSource sqlParm = new MapSqlParameterSource()
+                .addValue("searchKeyword", searchDAO.getSearchKeyword());
+
+        int totalPost = jdbcTemplate.queryForObject(sql.toString(), sqlParm, Integer.class);
+        log.info("repository 에서 searchTotalPost : {}",totalPost);
+        return totalPost;
+    }
 
     @Override
     public void update(Post post) {
@@ -176,5 +202,25 @@ public class BoardRepositoryPrototype implements BoardRepository {
 
         // 마지막 페이지 값 받아오는 쿼리 작성
         return totalPost;
+    }
+
+    private void searchTypeDynamicQuery(SearchType searchType, StringBuilder stringBuilder) {
+        switch (searchType) {
+            case TITLE:
+                stringBuilder.append("TITLE LIKE CONCAT('%',:searchKeyword,'%') ");
+                break;
+            case WRITER:
+                stringBuilder.append("WRITER LIKE CONCAT('%',:searchKeyword,'%') ");
+                break;
+            case CONTENT:
+                stringBuilder.append("CONTENT LIKE CONCAT('%',:searchKeyword,'%') ");
+                break;
+            case TITLEORCONTENT:
+                stringBuilder.append("(TITLE LIKE CONCAT('%', :searchKeyword, '%') OR CONTENT LIKE CONCAT('%', :searchKeyword, '%')) ");
+                break;
+            default:
+                log.info("SearchType 값이 이상합니다!! :: " + searchType);
+                break;
+        }
     }
 }

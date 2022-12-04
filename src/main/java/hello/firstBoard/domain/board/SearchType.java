@@ -1,8 +1,13 @@
 package hello.firstBoard.domain.board;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum SearchType {
-    title,
-    content,
-    titleOrContent,
-    writer;
+    TITLE,
+    CONTENT,
+    TITLEORCONTENT,
+    WRITER
 }
