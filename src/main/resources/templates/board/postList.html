@@ -83,26 +83,26 @@
 
     <!-- 페이징 처리 -->
     <nav aria-label="Page navigation example">
-      <div>
+      <div th:object="${pageViewDTO}">
         <ul class="pagination justify-content-center">
           <li class="page-item"
-              th:classappend="${pagination.nowPage == 1} ? 'disabled'">
-            <a class="page-link" th:href="@{free(page=${pagination.nowPage}-1)}" tabindex="-1">Previous</a>
+              th:classappend="*{page == 1} ? 'disabled'">
+            <a class="page-link" th:href="@{free(page=*{page}-1)}" tabindex="-1">Previous</a>
           </li>
 
-          <th:block th:each="page : ${prevPageList}">
+          <th:block th:each="page : *{prevPageList}">
             <li class="page-item"><a class="page-link" th:href="@{free(page=${page})}" th:text="${page}">1</a></li>
           </th:block>
 
-          <li class="page-item"><a class="page-link disabled" th:text="${pagination.nowPage}"></a></li>
+          <li class="page-item"><a class="page-link disabled" th:text="*{page}"></a></li>
 
-          <th:block th:each="page : ${nextPageList}">
+          <th:block th:each="page : *{nextPageList}">
             <li class="page-item"><a class="page-link" th:href="@{free(page=${page})}" th:text="${page}">1</a></li>
           </th:block>
 
           <li class="page-item"
-              th:classappend="${#lists.size(nextPageList) == 0} ? 'disabled'">
-            <a class="page-link" th:href="@{free(page=${pagination.nowPage}+1)}">Next</a>
+              th:classappend="${#lists.size(pageViewDTO.nextPageList) == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{free(page=*{page}+1)}">Next</a>
           </li>
         </ul>
       </div>

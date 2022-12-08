@@ -1,9 +1,6 @@
 package hello.firstBoard.service.board;
 
-import hello.firstBoard.domain.board.Page;
-import hello.firstBoard.domain.board.Post;
-import hello.firstBoard.domain.board.SearchDAO;
-import hello.firstBoard.domain.board.SearchDTO;
+import hello.firstBoard.domain.board.*;
 import hello.firstBoard.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +34,18 @@ public class BoardService {
         return postList;
     }
 
+    public List<Post> getPostList(RefacPageRequestDTO requestPageDTO) {
+        RefacPageDAO refacPageDAO = new RefacPageDAO(requestPageDTO);
+        List<Post> postList = boardRepository.getPostList(refacPageDAO);
+        return postList;
+    }
+
+    public RefacPageViewDTO getPageViewDTO(RefacPageRequestDTO requestPageDTO) {
+        int lastPage = getLastPage(requestPageDTO);
+        RefacPageViewDTO refacPageViewDTO = new RefacPageViewDTO(requestPageDTO, lastPage);
+        return refacPageViewDTO;
+    }
+
     public Post getPost(long postId) {
         boardRepository.plusHit(postId);
         return boardRepository.getPost(postId);
@@ -52,6 +61,10 @@ public class BoardService {
 
     public int getLastPage(int pageSize) {
         return (int)Math.ceil(boardRepository.getTotalPost()/(double)pageSize);
+    }
+
+    public int getLastPage(RefacPageRequestDTO requestPageDTO) {
+        return getLastPage(requestPageDTO.getPageSize());
     }
 
     public List<Post> getSearchList(SearchDTO searchDTO) {

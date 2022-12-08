@@ -85,6 +85,23 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
+    public List<Post> getPostList(RefacPageDAO pageDAO) {
+        String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
+                "WHERE DELETEFLAG=FALSE " +
+                "ORDER BY ID DESC LIMIT :offsetPostCount, :pageSize";
+        SqlParameterSource sqlParam = new MapSqlParameterSource()
+                .addValue("offsetPostCount", pageDAO.getOffsetPostCount())
+                .addValue("pageSize", pageDAO.getPageSize());
+
+        try {
+            return jdbcTemplate.query(sql, sqlParam, postRowMapper()); // List<Post> 반환
+        } catch (Exception e) {
+            log.warn("ERROR : getPostList() query error ", e);
+        }
+        return null;
+    }
+
+    @Override
     public List<Post> getPostSearchList(SearchDAO searchDAO) {
         /* 동적 쿼리 처리가 필요함
         ex.

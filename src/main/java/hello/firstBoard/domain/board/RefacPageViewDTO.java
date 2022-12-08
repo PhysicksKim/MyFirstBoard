@@ -1,9 +1,11 @@
 package hello.firstBoard.domain.board;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
-public class RefacViewPageDTO extends RefacPage{
+public class RefacPageViewDTO extends RefacPage{
     /**
      * ViewPage 에서는
      * nowPage , prevPageList , nextPageList 들어감
@@ -15,14 +17,18 @@ public class RefacViewPageDTO extends RefacPage{
     private int[] prevPageList;
     private int[] nextPageList;
 
-    public RefacViewPageDTO(int nowPage, int pageSize, int lastPage) {
+    public RefacPageViewDTO(int nowPage, int pageSize, int lastPage) {
         super(nowPage, pageSize);
-        prevPageList = getPrevPageList(nowPage);
-        nextPageList = getNextPageList(nowPage, lastPage); // lastPage 필요해서 DB 이후 호출되어야함
+        prevPageList = calculPrevPageList(nowPage);
+        nextPageList = calculNextPageList(nowPage, lastPage); // lastPage 필요해서 DB 이후 호출되어야함
     }
 
-    private int[] getPrevPageList(int page) {
-        int prevPageStart = page - pageButtons < 0 ? 1 : page - pageButtons;
+    public RefacPageViewDTO(RefacPageRequestDTO requestPageDTO, int lastPage) {
+        this(requestPageDTO.getPage(), requestPageDTO.getPageSize(), lastPage);
+    }
+
+    private int[] calculPrevPageList(int page) {
+        int prevPageStart = page - pageButtons < 1 ? 1 : page - pageButtons;
         int prevPageLen = page - prevPageStart;
         int[] prevPageList = new int[prevPageLen];
 
@@ -33,7 +39,7 @@ public class RefacViewPageDTO extends RefacPage{
         return prevPageList;
     }
 
-    private int[] getNextPageList(int page, int lastPage) {
+    private int[] calculNextPageList(int page, int lastPage) {
         int nextPageEnd   = page + pageButtons > lastPage ? lastPage : page + pageButtons;
         int nextPageLen = nextPageEnd - page;
         int[] nextPageList = new int[nextPageLen > 0 ? nextPageLen : 0];

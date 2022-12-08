@@ -1,8 +1,6 @@
 package hello.firstBoard.domain.board;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class RefacPageDAO extends RefacPage{
@@ -14,7 +12,15 @@ public class RefacPageDAO extends RefacPage{
      * Entity 클래스는 Post를 이용함
      */
 
+    private int offsetPostCount;
+
     public RefacPageDAO(int nowPage, int pageSize) {
         super(nowPage, pageSize);
+
+        this.offsetPostCount = (page-1)*pageSize;
+    }
+
+    public RefacPageDAO(RefacPageRequestDTO requestPageDTO) {
+        this(requestPageDTO.getPage(), requestPageDTO.getPageSize());
     }
 }
