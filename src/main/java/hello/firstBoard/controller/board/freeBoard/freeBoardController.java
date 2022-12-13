@@ -32,46 +32,13 @@ public class freeBoardController {
     @GetMapping("free") // 게시판 글 목록 보여주는 페이지
     public String pagePostList(Model model,
                                @ModelAttribute RefacPageRequestDTO pageRequestDTO) {
-        // 여기서 @RequestParam에서 defaultValue를 안해주면, 쿼리파라미터가 안넘어올 경우 에러가 난다.
-        // 근데 쿼리파라미터가 없으면 첫페이지로 지정하고 싶었기에, 위처럼 defaultValue = "-1" 로 했다
-
         log.info("controller binding RefacRequestPageDTO : {}", pageRequestDTO);
 
         List<Post> postList = boardService.getPostList(pageRequestDTO);
         RefacPageViewDTO pageViewDTO = boardService.getPageViewDTO(pageRequestDTO);
 
-        /*
-        // 1. 현재 몇 페이지인지, 한 페이지에 게시글 몇 개 보여줄건지 정보 담음
-        Page pagination = new Page(page, pageSize);
-
-        // 2. 하단에 페이지 버튼 표시 관련 모델 데이터 생성
-        int lastPage = boardService.getLastPage(pageSize);
-        int[] prevPageList = boardService.getPrevPageList(page);
-        int[] nextPageList = boardService.getNextPageList(page, lastPage);
-
-        // 3. 페이지네이션 객체에 담긴 정보를 토대로, 다음
-        List<Post> postList = boardService.getPostList(pagination);
-
-        // 페이지에 맞는 글 목록들을 담아서 넘겨줌
         model.addAttribute("postList", postList);
-
-        // 페이징과 관련된 정보들을 담아서 넘겨줌
-        model.addAttribute("pagination", pagination);
-        model.addAttribute("prevPageList", prevPageList);
-        model.addAttribute("nextPageList", nextPageList);
-
-        */
-
-        // 에러 안뜨도록 일단 임시로 추가
-
-        model.addAttribute("postList", postList);
-
-        // 페이징과 관련된 정보들을 담아서 넘겨줌
         model.addAttribute("pageViewDTO", pageViewDTO);
-        // model.addAttribute("pagination", new Page(1, 5));
-        // model.addAttribute("prevPageList", pageViewDTO.getPrevPageList());
-        // model.addAttribute("nextPageList", pageViewDTO.getNextPageList());
-
 
         return ViewPathConst.FREEBOARD_LIST;
     }
@@ -79,9 +46,8 @@ public class freeBoardController {
     //http://localhost:8080/board/free/search?searchType=제목&searchKeyword=asd
     @GetMapping("free/search")
     public String pageSearchList(Model model,
-                                @ModelAttribute SearchDTO searchDTO,
-                                 @RequestParam(name = "page", defaultValue = "1") Integer page,
-                                 @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
+                                 @ModelAttribute SearchDTO searchDTO,
+                                 @ModelAttribute RefacPageRequestDTO pageRequestDTO) {
         // ----- log용 ------- 나중에 지움
         SearchDAO searchDAO = new SearchDAO(searchDTO);
         log.info("searchDTO : {}" , searchDTO);
@@ -89,22 +55,25 @@ public class freeBoardController {
         // ---------------------------
 
         List<Post> searchList = boardService.getSearchList(searchDTO);
-        Page pagination = new Page(page, pageSize);
+        RefacPageViewDTO pageViewDTO = boardService.getPageViewDTO(pageRequestDTO);
 
-        log.info("{}", pagination);
-        int lastPage = boardService.getSearchLastPage(pageSize, searchDAO); // 검색결과
-        log.info("{}", lastPage);
-        int[] prevPageList = boardService.getPrevPageList(page);
-        int[] nextPageList = boardService.getNextPageList(page, lastPage);
+        // Page pagination = new Page(page, pageSize);
+        //
+        // log.info("{}", pagination);
+        // int lastPage = boardService.getSearchLastPage(pageSize, searchDAO); // 검색결과
+        // log.info("{}", lastPage);
+        // int[] prevPageList = boardService.getPrevPageList(page);
+        // int[] nextPageList = boardService.getNextPageList(page, lastPage);
 
         // 페이지에 맞는 글 목록들을 담아서 넘겨줌
         model.addAttribute("postList", searchList);
+        model.addAttribute("pageViewDTO", pageViewDTO);
 
         // 페이징과 관련된 정보들을 담아서 넘겨줌
-        model.addAttribute("pagination", pagination);
-        model.addAttribute("prevPageList", prevPageList);
-        model.addAttribute("nextPageList", nextPageList);
-
+        // model.addAttribute("pagination", pagination);
+        // model.addAttribute("prevPageList", prevPageList);
+        // model.addAttribute("nextPageList", nextPageList);
+        //
 
         return ViewPathConst.FREEBOARD_LIST;
     }
