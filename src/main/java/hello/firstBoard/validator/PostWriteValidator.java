@@ -1,6 +1,6 @@
 package hello.firstBoard.validator;
 
-import hello.firstBoard.domain.board.PostWrite;
+import hello.firstBoard.domain.board.Posts.PostWrite;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

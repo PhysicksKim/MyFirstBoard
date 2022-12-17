@@ -1,4 +1,4 @@
-package hello.firstBoard.domain.board;
+package hello.firstBoard.domain.board.Pages;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,8 @@
 package hello.firstBoard.repository;
 
-import hello.firstBoard.domain.board.Page;
-import hello.firstBoard.domain.board.Post;
-import hello.firstBoard.domain.board.RefacPageDAO;
-import hello.firstBoard.domain.board.SearchDAO;
+import hello.firstBoard.domain.board.Posts.Post;
+import hello.firstBoard.domain.board.Pages.PageDAO;
+import hello.firstBoard.domain.board.Pages.SearchDAO;
 
 import java.util.List;
 
@@ -18,9 +17,10 @@ public interface BoardRepository {
 
     // Read
     Post getPost(long postId);
+    /*
     List<Post> getPostList(Page pagination);
-
-    List<Post> getPostList(RefacPageDAO refacPageDAO);
+    */
+    List<Post> getPostList(PageDAO refacPageDAO);
 
     // Read (Search)
     List<Post> getPostSearchList(SearchDAO searchDAO);

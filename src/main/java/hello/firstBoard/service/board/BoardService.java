@@ -1,6 +1,7 @@
 package hello.firstBoard.service.board;
 
-import hello.firstBoard.domain.board.*;
+import hello.firstBoard.domain.board.Pages.*;
+import hello.firstBoard.domain.board.Posts.Post;
 import hello.firstBoard.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -29,20 +30,15 @@ public class BoardService {
         return boardRepository.save(post);
     }
 
-    public List<Post> getPostList(Page pagination) {
-        List<Post> postList = boardRepository.getPostList(pagination);
-        return postList;
-    }
-
-    public List<Post> getPostList(RefacPageRequestDTO requestPageDTO) {
-        RefacPageDAO refacPageDAO = new RefacPageDAO(requestPageDTO);
+    public List<Post> getPostList(PageRequestDTO requestPageDTO) {
+        PageDAO refacPageDAO = new PageDAO(requestPageDTO);
         List<Post> postList = boardRepository.getPostList(refacPageDAO);
         return postList;
     }
 
-    public RefacPageViewDTO getPageViewDTO(RefacPageRequestDTO requestPageDTO) {
+    public PageViewDTO getPageViewDTO(PageRequestDTO requestPageDTO) {
         int lastPage = getLastPage(requestPageDTO);
-        RefacPageViewDTO refacPageViewDTO = new RefacPageViewDTO(requestPageDTO, lastPage);
+        PageViewDTO refacPageViewDTO = new PageViewDTO(requestPageDTO, lastPage);
         return refacPageViewDTO;
     }
 
@@ -63,12 +59,12 @@ public class BoardService {
         return (int)Math.ceil(boardRepository.getTotalPost()/(double)pageSize);
     }
 
-    public int getLastPage(RefacPageRequestDTO requestPageDTO) {
+    public int getLastPage(PageRequestDTO requestPageDTO) {
         return getLastPage(requestPageDTO.getPageSize());
     }
 
-    public List<Post> getSearchList(SearchDTO searchDTO) {
-        SearchDAO searchDAO = new SearchDAO(searchDTO);
+    public List<Post> getSearchList(SearchRequestDTO searchRequestDTO) {
+        SearchDAO searchDAO = new SearchDAO(searchRequestDTO);
         List<Post> postSearchList = boardRepository.getPostSearchList(searchDAO);
         log.info("searchDAO : {}", searchDAO);
         log.info("postSearchList : {}", postSearchList);

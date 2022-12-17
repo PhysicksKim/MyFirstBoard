@@ -1,16 +1,16 @@
-package hello.firstBoard.domain.board;
+package hello.firstBoard.domain.board.Pages;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class RefacPage {
+public class Page {
 
     protected int page;
     protected int pageSize;
 
-    public RefacPage(int page, int pageSize) {
+    public Page(int page, int pageSize) {
         this.page = page;
         this.pageSize = pageSize;
     }

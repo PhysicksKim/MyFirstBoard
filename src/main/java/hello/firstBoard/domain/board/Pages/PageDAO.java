@@ -1,9 +1,11 @@
-package hello.firstBoard.domain.board;
+package hello.firstBoard.domain.board.Pages;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class RefacPageDAO extends RefacPage{
+@NoArgsConstructor // 상속하는 SearchDAO 에서 @Data 에서 Lombok needs a default constructor 에러를 띄우기 때문에 추가
+public class PageDAO extends Page {
     /**
      * DB access 를 위해서는
      * startPost, pageSize 필요함
@@ -14,13 +16,13 @@ public class RefacPageDAO extends RefacPage{
 
     private int offsetPostCount;
 
-    public RefacPageDAO(int nowPage, int pageSize) {
+    public PageDAO(int nowPage, int pageSize) {
         super(nowPage, pageSize);
 
         this.offsetPostCount = (page-1)*pageSize;
     }
 
-    public RefacPageDAO(RefacPageRequestDTO requestPageDTO) {
+    public PageDAO(PageRequestDTO requestPageDTO) {
         this(requestPageDTO.getPage(), requestPageDTO.getPageSize());
     }
 }

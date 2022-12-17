@@ -1,4 +1,4 @@
-package hello.firstBoard.domain.board;
+package hello.firstBoard.domain.board.Posts;
 
 import lombok.Data;
 

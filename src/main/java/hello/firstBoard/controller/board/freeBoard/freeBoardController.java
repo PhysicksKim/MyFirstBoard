@@ -1,7 +1,9 @@
 package hello.firstBoard.controller.board.freeBoard;
 
 import hello.firstBoard.consts.ViewPathConst;
-import hello.firstBoard.domain.board.*;
+import hello.firstBoard.domain.board.Pages.*;
+import hello.firstBoard.domain.board.Posts.Post;
+import hello.firstBoard.domain.board.Posts.PostWrite;
 import hello.firstBoard.service.board.BoardService;
 import hello.firstBoard.validator.PostWriteValidator;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +33,11 @@ public class freeBoardController {
 
     @GetMapping("free") // 게시판 글 목록 보여주는 페이지
     public String pagePostList(Model model,
-                               @ModelAttribute RefacPageRequestDTO pageRequestDTO) {
+                               @ModelAttribute PageRequestDTO pageRequestDTO) {
         log.info("controller binding RefacRequestPageDTO : {}", pageRequestDTO);
 
         List<Post> postList = boardService.getPostList(pageRequestDTO);
-        RefacPageViewDTO pageViewDTO = boardService.getPageViewDTO(pageRequestDTO);
+        PageViewDTO pageViewDTO = boardService.getPageViewDTO(pageRequestDTO);
 
         model.addAttribute("postList", postList);
         model.addAttribute("pageViewDTO", pageViewDTO);
@@ -46,34 +48,21 @@ public class freeBoardController {
     //http://localhost:8080/board/free/search?searchType=제목&searchKeyword=asd
     @GetMapping("free/search")
     public String pageSearchList(Model model,
-                                 @ModelAttribute SearchDTO searchDTO,
-                                 @ModelAttribute RefacPageRequestDTO pageRequestDTO) {
+                                 @ModelAttribute SearchRequestDTO searchRequestDTO,
+                                 @ModelAttribute PageRequestDTO pageRequestDTO) {
         // ----- log용 ------- 나중에 지움
-        SearchDAO searchDAO = new SearchDAO(searchDTO);
-        log.info("searchDTO : {}" , searchDTO);
+        log.info("SearchRequestDTO : {}", searchRequestDTO);
+        SearchDAO searchDAO = new SearchDAO(searchRequestDTO);
+        log.info("searchDTO : {}" , searchRequestDTO);
         log.info("searchDAO : {}" , searchDAO);
         // ---------------------------
 
-        List<Post> searchList = boardService.getSearchList(searchDTO);
-        RefacPageViewDTO pageViewDTO = boardService.getPageViewDTO(pageRequestDTO);
-
-        // Page pagination = new Page(page, pageSize);
-        //
-        // log.info("{}", pagination);
-        // int lastPage = boardService.getSearchLastPage(pageSize, searchDAO); // 검색결과
-        // log.info("{}", lastPage);
-        // int[] prevPageList = boardService.getPrevPageList(page);
-        // int[] nextPageList = boardService.getNextPageList(page, lastPage);
+        List<Post> searchList = boardService.getSearchList(searchRequestDTO);
+        PageViewDTO pageViewDTO = boardService.getPageViewDTO(pageRequestDTO);
 
         // 페이지에 맞는 글 목록들을 담아서 넘겨줌
         model.addAttribute("postList", searchList);
         model.addAttribute("pageViewDTO", pageViewDTO);
-
-        // 페이징과 관련된 정보들을 담아서 넘겨줌
-        // model.addAttribute("pagination", pagination);
-        // model.addAttribute("prevPageList", prevPageList);
-        // model.addAttribute("nextPageList", nextPageList);
-        //
 
         return ViewPathConst.FREEBOARD_LIST;
     }

@@ -1,6 +1,9 @@
 package hello.firstBoard.repository;
 
-import hello.firstBoard.domain.board.*;
+import hello.firstBoard.domain.board.Pages.PageDAO;
+import hello.firstBoard.domain.board.Pages.SearchDAO;
+import hello.firstBoard.domain.board.Pages.SearchType;
+import hello.firstBoard.domain.board.Posts.Post;
 import hello.firstBoard.utils.SQLDateUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +69,8 @@ public class BoardRepositoryPrototype implements BoardRepository {
         return jdbcTemplate.queryForObject(sql, param, postRowMapper());
     }
 
-    @Override
+/*
+    @Deprecated
     public List<Post> getPostList(Page pagination) {
         String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
                 "WHERE DELETEFLAG=FALSE " +
@@ -83,9 +87,10 @@ public class BoardRepositoryPrototype implements BoardRepository {
         }
         return null;
     }
+*/
 
     @Override
-    public List<Post> getPostList(RefacPageDAO pageDAO) {
+    public List<Post> getPostList(PageDAO pageDAO) {
         String sql = "SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
                 "WHERE DELETEFLAG=FALSE " +
                 "ORDER BY ID DESC LIMIT :offsetPostCount, :pageSize";
@@ -127,10 +132,10 @@ public class BoardRepositoryPrototype implements BoardRepository {
         sql.append("ORDER BY ID DESC LIMIT :start, :size ;");
         SqlParameterSource sqlParam = new MapSqlParameterSource()
                 .addValue("searchKeyword", searchDAO.getSearchKeyword())
-                .addValue("start", searchDAO.getStartPost())
+                .addValue("start", searchDAO.getOffsetPostCount())
                 .addValue("size", searchDAO.getPageSize());
 
-        log.info("searchDAO.start : {}", searchDAO.getStartPost());
+        log.info("searchDAO.start : {}", searchDAO.getOffsetPostCount());
         log.info("searchDAO.size : {}", searchDAO.getPageSize());
         log.info("sql query string : {}", sql.toString());
         log.info("sqlParm : {}", sqlParam);

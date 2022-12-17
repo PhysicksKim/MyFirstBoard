@@ -1,11 +1,9 @@
-package hello.firstBoard.domain.board;
+package hello.firstBoard.domain.board.Pages;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
-public class RefacPageViewDTO extends RefacPage{
+public class PageViewDTO extends Page {
     /**
      * ViewPage 에서는
      * nowPage , prevPageList , nextPageList 들어감
@@ -17,13 +15,13 @@ public class RefacPageViewDTO extends RefacPage{
     private int[] prevPageList;
     private int[] nextPageList;
 
-    public RefacPageViewDTO(int nowPage, int pageSize, int lastPage) {
+    public PageViewDTO(int nowPage, int pageSize, int lastPage) {
         super(nowPage, pageSize);
         prevPageList = calculPrevPageList(nowPage);
         nextPageList = calculNextPageList(nowPage, lastPage); // lastPage 필요해서 DB 이후 호출되어야함
     }
 
-    public RefacPageViewDTO(RefacPageRequestDTO requestPageDTO, int lastPage) {
+    public PageViewDTO(PageRequestDTO requestPageDTO, int lastPage) {
         this(requestPageDTO.getPage(), requestPageDTO.getPageSize(), lastPage);
     }
 
