@@ -48,21 +48,15 @@ public class freeBoardController {
     //http://localhost:8080/board/free/search?searchType=제목&searchKeyword=asd
     @GetMapping("free/search")
     public String pageSearchList(Model model,
-                                 @ModelAttribute SearchRequestDTO searchRequestDTO,
+                                 @ModelAttribute Search search,
                                  @ModelAttribute PageRequestDTO pageRequestDTO) {
-        // ----- log용 ------- 나중에 지움
-        log.info("SearchRequestDTO : {}", searchRequestDTO);
-        SearchDAO searchDAO = new SearchDAO(searchRequestDTO);
-        log.info("searchDTO : {}" , searchRequestDTO);
-        log.info("searchDAO : {}" , searchDAO);
-        // ---------------------------
 
-        List<Post> searchList = boardService.getSearchList(searchRequestDTO);
-        PageViewDTO pageViewDTO = boardService.getPageViewDTO(pageRequestDTO);
+        List<Post> searchList = boardService.getSearchList(search, pageRequestDTO);
+        PageViewDTO pageViewDTOForSearch = boardService.getPageViewDTOForSearch(pageRequestDTO, search);
 
         // 페이지에 맞는 글 목록들을 담아서 넘겨줌
         model.addAttribute("postList", searchList);
-        model.addAttribute("pageViewDTO", pageViewDTO);
+        model.addAttribute("pageViewDTO", pageViewDTOForSearch);
 
         return ViewPathConst.FREEBOARD_LIST;
     }

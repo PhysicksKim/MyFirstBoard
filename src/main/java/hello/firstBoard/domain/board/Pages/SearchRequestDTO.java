@@ -5,6 +5,7 @@ import lombok.ToString;
 
 @Data
 @ToString(callSuper = true)
+@Deprecated
 public class SearchRequestDTO extends PageRequestDTO{
 
     private SearchType searchType;

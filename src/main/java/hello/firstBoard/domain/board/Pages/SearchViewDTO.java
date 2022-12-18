@@ -1,5 +1,6 @@
 package hello.firstBoard.domain.board.Pages;
 
+@Deprecated
 public class SearchViewDTO extends PageViewDTO {
 
     String searchKeyword;

@@ -31,15 +31,21 @@ public class BoardService {
     }
 
     public List<Post> getPostList(PageRequestDTO requestPageDTO) {
-        PageDAO refacPageDAO = new PageDAO(requestPageDTO);
-        List<Post> postList = boardRepository.getPostList(refacPageDAO);
+        PageDAO pageDAO = new PageDAO(requestPageDTO);
+        List<Post> postList = boardRepository.getPostList(pageDAO);
         return postList;
     }
 
-    public PageViewDTO getPageViewDTO(PageRequestDTO requestPageDTO) {
-        int lastPage = getLastPage(requestPageDTO);
-        PageViewDTO refacPageViewDTO = new PageViewDTO(requestPageDTO, lastPage);
-        return refacPageViewDTO;
+    public PageViewDTO getPageViewDTO(PageRequestDTO pageRequestDTO) {
+        int lastPage = getLastPage(pageRequestDTO);
+        PageViewDTO pageViewDTO = new PageViewDTO(pageRequestDTO, lastPage);
+        return pageViewDTO;
+    }
+
+    public PageViewDTO getPageViewDTOForSearch(PageRequestDTO pageRequestDTO, Search search) {
+        int lastPage = getSearchLastPage(pageRequestDTO.getPageSize(), search);
+        PageViewDTO pageViewDTO = new PageViewDTO(pageRequestDTO, lastPage);
+        return pageViewDTO;
     }
 
     public Post getPost(long postId) {
@@ -63,17 +69,16 @@ public class BoardService {
         return getLastPage(requestPageDTO.getPageSize());
     }
 
-    public List<Post> getSearchList(SearchRequestDTO searchRequestDTO) {
-        SearchDAO searchDAO = new SearchDAO(searchRequestDTO);
-        List<Post> postSearchList = boardRepository.getPostSearchList(searchDAO);
-        log.info("searchDAO : {}", searchDAO);
+    public List<Post> getSearchList(Search search, PageRequestDTO pageRequestDTO) {
+        PageDAO pageDAO = new PageDAO(pageRequestDTO);
+        List<Post> postSearchList = boardRepository.getPostSearchList(search, pageDAO);
         log.info("postSearchList : {}", postSearchList);
         return postSearchList;
     }
 
-    public int getSearchLastPage(int pageSize, SearchDAO searchDAO) {
+    public int getSearchLastPage(int pageSize, Search search) {
         // 만약 검색결과가 0이면 0을 리턴함
-        return (int)Math.ceil(boardRepository.getSearchTotalPost(searchDAO)/(double)pageSize);
+        return (int)Math.ceil(boardRepository.getSearchTotalPost(search)/(double)pageSize);
     }
 
     public int[] getPrevPageList(int page) {

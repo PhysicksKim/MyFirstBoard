@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Slf4j
+@Deprecated
 public class SearchDAO extends PageDAO {
 
     private String searchKeyword;

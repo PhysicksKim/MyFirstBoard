@@ -1,6 +1,7 @@
 package hello.firstBoard.repository;
 
 import hello.firstBoard.domain.board.Pages.PageDAO;
+import hello.firstBoard.domain.board.Pages.Search;
 import hello.firstBoard.domain.board.Pages.SearchDAO;
 import hello.firstBoard.domain.board.Pages.SearchType;
 import hello.firstBoard.domain.board.Posts.Post;
@@ -107,7 +108,8 @@ public class BoardRepositoryPrototype implements BoardRepository {
     }
 
     @Override
-    public List<Post> getPostSearchList(SearchDAO searchDAO) {
+    public List<Post> getPostSearchList(Search search, PageDAO pageDAO) {
+        // 예시 ; 전체 쿼리
         /* 동적 쿼리 처리가 필요함
         ex.
          SELECT * FROM BOARD WHERE DELETEFLAG=FALSE AND
@@ -120,38 +122,28 @@ public class BoardRepositoryPrototype implements BoardRepository {
                 .append("SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD WHERE DELETEFLAG=FALSE AND ");
 
         // (b) 동적쿼리
+        // 예시 ; 동적 쿼리 부분
         /*
         SELECT * FROM BOARD
           WHERE DELETEFLAG=FALSE AND
           ( TITLE LIKE CONCAT('%', '테스트', '%') OR CONTENT LIKE CONCAT('%', '테스트', '%') )
           ORDER BY ID DESC LIMIT 5
          */
-        searchTypeDynamicQuery(searchDAO.getSearchType(), sql);
+        searchTypeDynamicQuery(search.getSearchType(), sql);
 
         // (c) id순 정렬 쿼리
         sql.append("ORDER BY ID DESC LIMIT :start, :size ;");
         SqlParameterSource sqlParam = new MapSqlParameterSource()
-                .addValue("searchKeyword", searchDAO.getSearchKeyword())
-                .addValue("start", searchDAO.getOffsetPostCount())
-                .addValue("size", searchDAO.getPageSize());
-
-        log.info("searchDAO.start : {}", searchDAO.getOffsetPostCount());
-        log.info("searchDAO.size : {}", searchDAO.getPageSize());
-        log.info("sql query string : {}", sql.toString());
-        log.info("sqlParm : {}", sqlParam);
-
-        // List<Post> query = jdbcTemplate.query("SELECT ID, TITLE, WRITER, DATE, HIT FROM BOARD " +
-        //                 "WHERE DELETEFLAG=FALSE AND TITLE LIKE CONCAT('%','테스트','%') " +
-        //                 "ORDER BY ID DESC LIMIT 0, 5 ;"
-        //         , postRowMapper());
-
-        // log.info("디버깅용으로 만들어본 쌩짜쿼리 : {}", query);
+                .addValue("searchKeyword", search.getSearchKeyword())
+                .addValue("start", pageDAO.getOffsetPostCount())
+                .addValue("size", pageDAO.getPageSize());
 
         return jdbcTemplate.query(sql.toString(), sqlParam, postRowMapper()); // List<Post> 반환
+
     }
 
     @Override
-    public int getSearchTotalPost(SearchDAO searchDAO) {
+    public int getSearchTotalPost(Search search) {
         /*
         예시 쿼리
         SELECT COUNT(*) FROM BOARD
@@ -160,10 +152,10 @@ public class BoardRepositoryPrototype implements BoardRepository {
          */
         StringBuilder sql = new StringBuilder()
                 .append("SELECT COUNT(*) FROM BOARD WHERE DELETEFLAG=FALSE AND ");
-        searchTypeDynamicQuery(searchDAO.getSearchType(), sql);
+        searchTypeDynamicQuery(search.getSearchType(), sql);
 
         SqlParameterSource sqlParm = new MapSqlParameterSource()
-                .addValue("searchKeyword", searchDAO.getSearchKeyword());
+                .addValue("searchKeyword", search.getSearchKeyword());
 
         int totalPost = jdbcTemplate.queryForObject(sql.toString(), sqlParm, Integer.class);
         log.info("repository 에서 searchTotalPost : {}",totalPost);

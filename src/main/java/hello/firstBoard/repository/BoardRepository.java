@@ -1,5 +1,6 @@
 package hello.firstBoard.repository;
 
+import hello.firstBoard.domain.board.Pages.Search;
 import hello.firstBoard.domain.board.Posts.Post;
 import hello.firstBoard.domain.board.Pages.PageDAO;
 import hello.firstBoard.domain.board.Pages.SearchDAO;
@@ -23,9 +24,9 @@ public interface BoardRepository {
     List<Post> getPostList(PageDAO refacPageDAO);
 
     // Read (Search)
-    List<Post> getPostSearchList(SearchDAO searchDAO);
+    List<Post> getPostSearchList(Search search, PageDAO pageDAO);
     // SELECT * FROM BOARD WHERE DELETEFLAG=FALSE and WRITER LIKE CONCAT('%','test','%');
-    int getSearchTotalPost(SearchDAO searchDAO);
+    int getSearchTotalPost(Search search);
 
     // Update
     void update(Post post);
