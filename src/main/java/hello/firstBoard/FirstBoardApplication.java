@@ -13,6 +13,9 @@ public class FirstBoardApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FirstBoardApplication.class, args);
+		// 이 프로젝트는 이제 더이상 진행되지 않음
+		// secondBoard 레포지로 이동
+		// -> JPA, querydsl 및 도메인 주도 개발과 테스트 주도 개발 개념 추가
 	}
 
 	@Bean
